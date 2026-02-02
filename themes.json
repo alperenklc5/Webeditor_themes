@@ -1,0 +1,79 @@
+[
+  {
+    "id": "nova-agency",
+    "name": "Nova Agency",
+    "category": "Startup",
+    "thumbnail": "https://picsum.photos/seed/nova/400/300",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/Nova/index.html"
+  },
+  {
+    "id": "urban-store",
+    "name": "Urban Store",
+    "category": "E-Commerce",
+    "thumbnail": "https://picsum.photos/seed/urban/400/300",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/urban_store/index.html"
+  },
+  {
+    "id": "velvet-portfolio",
+    "name": "Velvet Portfolio",
+    "category": "Creative",
+    "thumbnail": "https://picsum.photos/seed/velvet/400/300",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/velvet_portfolio/index.html"
+  },
+  {
+    "id": "iron-gym",
+    "name": "Iron Gym",
+    "category": "Health",
+    "thumbnail": "https://picsum.photos/seed/gym/400/300",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/iron_gym/index.html"
+  },
+  {
+    "id": "apex-real-estate",
+    "name": "Apex Real Estate",
+    "category": "Business",
+    "thumbnail": "https://picsum.photos/seed/apex/400/300",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/apex_real_estate/index.html"
+  },
+  {
+    "id": "blossom-boutique",
+    "name": "Blossom Boutique",
+    "category": "Fashion",
+    "thumbnail": "https://picsum.photos/seed/blossom/400/300",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/blossom_boutique/index.html"
+  },
+  {
+    "id": "turbo-motors",
+    "name": "Turbo Motors",
+    "category": "Automotive",
+    "thumbnail": "https://picsum.photos/seed/turbo/400/300",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/turbo_motors/index.html"
+  },
+  {
+    "id": "royal-stay",
+    "name": "Royal Stay Hotel",
+    "category": "Hospitality",
+    "thumbnail": "https://picsum.photos/seed/royal/400/300",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/royal_stay_hotel/index.html"
+  },
+  {
+    "id": "petlife-vet",
+    "name": "PetLife Veterinary",
+    "category": "Health",
+    "thumbnail": "https://picsum.photos/seed/pet/400/300",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/petlife_vet/index.html"
+  },
+  {
+    "id": "medicare-plus",
+    "name": "MediCare Plus",
+    "category": "Health",
+    "thumbnail": "https://picsum.photos/seed/medic/400/300",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/medicare_plus/index.html"
+  },
+  {
+    "id": "crave-burger",
+    "name": "Crave Burger",
+    "category": "Food",
+    "thumbnail": "https://picsum.photos/seed/burger/400/300",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/crave_burger/index.html"
+  }
+]
