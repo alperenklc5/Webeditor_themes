@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velvet - Digital Artist Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'serif': ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        'velvet': {
+                            900: '#18181b',
+                            800: '#27272a',
+                            700: '#3f3f46',
+                            600: '#52525b',
+                            500: '#71717a',
+                            400: '#a1a1aa',
+                            300: '#d4d4d8',
+                            100: '#f4f4f5',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Grain Texture Overlay */
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+        
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom scrollbar - minimal */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #18181b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #52525b;
+        }
+        
+        /* Brutalist hover effect - B&W + Zoom */
+        .work-item {
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .work-item img {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: grayscale(0%);
+        }
+        
+        .work-item:hover img {
+            filter: grayscale(100%);
+            transform: scale(1.08);
+        }
+        
+        /* Button brutalist style */
+        .btn-brutalist {
+            border: 2px solid #f4f4f5;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-brutalist:hover {
+            background: #f4f4f5;
+            color: #18181b;
+        }
+        
+        /* Link underline animation */
+        .link-underline {
+            position: relative;
+        }
+        
+        .link-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #f4f4f5;
+            transition: width 0.3s ease;
+        }
+        
+        .link-underline:hover::after {
+            width: 100%;
+        }
+        
+        /* Fade up animation */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Stagger delays */
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+        .delay-400 { transition-delay: 0.4s; }
+        .delay-500 { transition-delay: 0.5s; }
+    </style>
+</head>
+<body class="bg-velvet-900 text-velvet-100 font-sans antialiased" x-data="{ mobileMenuOpen: false }">
+    
+    <!-- Grain Texture Overlay -->
+    <div class="grain-overlay"></div>
+    
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-velvet-900/90 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Name/Logo -->
+                <a href="#" class="font-serif text-2xl font-bold tracking-tight">
+                    VELVET
+                </a>
+                
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="#work" class="link-underline text-sm font-medium text-velvet-400 hover:text-velvet-100 transition-colors">Work</a>
+                    <a href="#about" class="link-underline text-sm font-medium text-velvet-400 hover:text-velvet-100 transition-colors">About</a>
+                    <a href="#contact" class="btn-brutalist px-6 py-2.5 text-sm font-medium">Let's Talk</a>
+                </nav>
+                
+                <!-- Mobile Menu Button -->
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-velvet-100 focus:outline-none">
+                    <i class="fas fa-bars text-xl" x-show="!mobileMenuOpen"></i>
+                    <i class="fas fa-times text-xl" x-show="mobileMenuOpen"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenuOpen" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 -translate-y-4"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 translate-y-0"
+             x-transition:leave-end="opacity-0 -translate-y-4"
+             class="md:hidden bg-velvet-800 border-t border-velvet-700">
+            <div class="px-6 py-6 space-y-4">
+                <a href="#work" @click="mobileMenuOpen = false" class="block text-velvet-300 hover:text-velvet-100 transition-colors py-2">Work</a>
+                <a href="#about" @click="mobileMenuOpen = false" class="block text-velvet-300 hover:text-velvet-100 transition-colors py-2">About</a>
+                <a href="#contact" @click="mobileMenuOpen = false" class="btn-brutalist inline-block px-6 py-3 text-center mt-4">Let's Talk</a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+            <h1 class="fade-up font-serif text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none">
+                I CREATE
+            </h1>
+            <h1 class="fade-up delay-100 font-serif text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none text-velvet-500">
+                DIGITAL
+            </h1>
+            <h1 class="fade-up delay-200 font-serif text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none">
+                ART
+            </h1>
+            
+            <p class="fade-up delay-300 mt-12 text-velvet-400 text-lg max-w-xl mx-auto">
+                Visual designer & art director crafting bold experiences for forward-thinking brands.
+            </p>
+            
+            <div class="fade-up delay-400 mt-10">
+                <a href="#work" class="inline-flex items-center gap-2 text-sm font-medium text-velvet-400 hover:text-velvet-100 transition-colors">
+                    <span>Scroll to explore</span>
+                    <i class="fas fa-arrow-down animate-bounce"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Work Section - Masonry Grid -->
+    <section id="work" class="py-24 lg:py-32">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="mb-16">
+                <span class="text-velvet-500 text-sm font-medium tracking-widest uppercase">Selected Work</span>
+                <h2 class="font-serif text-4xl md:text-5xl font-bold mt-4">Projects</h2>
+            </div>
+            
+            <!-- Masonry Grid using Tailwind Columns -->
+            <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                <!-- Project 1 -->
+                <div class="work-item break-inside-avoid">
+                    <div class="relative overflow-hidden rounded-sm">
+                        <img src="https://picsum.photos/seed/art1/600/800" 
+                             alt="Project 1" 
+                             class="w-full h-auto object-cover">
+                        <div class="absolute inset-0 bg-velvet-900/0 hover:bg-velvet-900/20 transition-colors"></div>
+                    </div>
+                    <div class="mt-4">
+                        <h3 class="font-serif text-xl font-semibold">Ethereal Dreams</h3>
+                        <p class="text-velvet-500 text-sm mt-1">Brand Identity / 2024</p>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="work-item break-inside-avoid">
+                    <div class="relative overflow-hidden rounded-sm">
+                        <img src="https://picsum.photos/seed/art2/600/450" 
+                             alt="Project 2" 
+                             class="w-full h-auto object-cover">
+                    </div>
+                    <div class="mt-4">
+                        <h3 class="font-serif text-xl font-semibold">Urban Canvas</h3>
+                        <p class="text-velvet-500 text-sm mt-1">Art Direction / 2024</p>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="work-item break-inside-avoid">
+                    <div class="relative overflow-hidden rounded-sm">
+                        <img src="https://picsum.photos/seed/art3/600/700" 
+                             alt="Project 3" 
+                             class="w-full h-auto object-cover">
+                    </div>
+                    <div class="mt-4">
+                        <h3 class="font-serif text-xl font-semibold">Noir Collection</h3>
+                        <p class="text-velvet-500 text-sm mt-1">Photography / 2023</p>
+                    </div>
+                </div>
+                
+                <!-- Project 4 -->
+                <div class="work-item break-inside-avoid">
+                    <div class="relative overflow-hidden rounded-sm">
+                        <img src="https://picsum.photos/seed/art4/600/500" 
+                             alt="Project 4" 
+                             class="w-full h-auto object-cover">
+                    </div>
+                    <div class="mt-4">
+                        <h3 class="font-serif text-xl font-semibold">Abstract Flow</h3>
+                        <p class="text-velvet-500 text-sm mt-1">Digital Art / 2023</p>
+                    </div>
+                </div>
+                
+                <!-- Project 5 -->
+                <div class="work-item break-inside-avoid">
+                    <div class="relative overflow-hidden rounded-sm">
+                        <img src="https://picsum.photos/seed/art5/600/850" 
+                             alt="Project 5" 
+                             class="w-full h-auto object-cover">
+                    </div>
+                    <div class="mt-4">
+                        <h3 class="font-serif text-xl font-semibold">Silent Echo</h3>
+                        <p class="text-velvet-500 text-sm mt-1">Editorial / 2023</p>
+                    </div>
+                </div>
+                
+                <!-- Project 6 -->
+                <div class="work-item break-inside-avoid">
+                    <div class="relative overflow-hidden rounded-sm">
+                        <img src="https://picsum.photos/seed/art6/600/600" 
+                             alt="Project 6" 
+                             class="w-full h-auto object-cover">
+                    </div>
+                    <div class="mt-4">
+                        <h3 class="font-serif text-xl font-semibold">Chromatic Shift</h3>
+                        <p class="text-velvet-500 text-sm mt-1">Visual Design / 2023</p>
+                    </div>
+                </div>
+                
+                <!-- Project 7 -->
+                <div class="work-item break-inside-avoid">
+                    <div class="relative overflow-hidden rounded-sm">
+                        <img src="https://picsum.photos/seed/art7/600/750" 
+                             alt="Project 7" 
+                             class="w-full h-auto object-cover">
+                    </div>
+                    <div class="mt-4">
+                        <h3 class="font-serif text-xl font-semibold">Velvet Dreams</h3>
+                        <p class="text-velvet-500 text-sm mt-1">Campaign / 2022</p>
+                    </div>
+                </div>
+                
+                <!-- Project 8 -->
+                <div class="work-item break-inside-avoid">
+                    <div class="relative overflow-hidden rounded-sm">
+                        <img src="https://picsum.photos/seed/art8/600/400" 
+                             alt="Project 8" 
+                             class="w-full h-auto object-cover">
+                    </div>
+                    <div class="mt-4">
+                        <h3 class="font-serif text-xl font-semibold">Minimalist Soul</h3>
+                        <p class="text-velvet-500 text-sm mt-1">Web Design / 2022</p>
+                    </div>
+                </div>
+                
+                <!-- Project 9 -->
+                <div class="work-item break-inside-avoid">
+                    <div class="relative overflow-hidden rounded-sm">
+                        <img src="https://picsum.photos/seed/art9/600/720" 
+                             alt="Project 9" 
+                             class="w-full h-auto object-cover">
+                    </div>
+                    <div class="mt-4">
+                        <h3 class="font-serif text-xl font-semibold">Shadow Play</h3>
+                        <p class="text-velvet-500 text-sm mt-1">Photography / 2022</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section - Split Layout -->
+    <section id="about" class="py-24 lg:py-32 bg-velvet-800">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <!-- Left - Large Photo -->
+                <div class="fade-up">
+                    <div class="relative">
+                        <img src="https://picsum.photos/seed/portrait/800/1000" 
+                             alt="Portrait" 
+                             class="w-full h-auto object-cover grayscale">
+                        <div class="absolute inset-0 bg-velvet-900/10"></div>
+                    </div>
+                </div>
+                
+                <!-- Right - Text Content -->
+                <div class="fade-up delay-200">
+                    <span class="text-velvet-500 text-sm font-medium tracking-widest uppercase">About</span>
+                    <h2 class="font-serif text-4xl md:text-5xl font-bold mt-4 mb-8">
+                        Crafting Visual Stories That Resonate
+                    </h2>
+                    
+                    <div class="space-y-6 text-velvet-400 leading-relaxed">
+                        <p>
+                            I'm a multidisciplinary designer and art director with over 8 years of experience 
+                            creating bold, memorable visual identities for brands that dare to stand out.
+                        </p>
+                        <p>
+                            My work sits at the intersection of art and commerce, blending brutalist aesthetics 
+                            with refined elegance. I believe in the power of contrast—dark and light, 
+                            chaos and order, tradition and rebellion.
+                        </p>
+                        <p>
+                            Based in New York, I collaborate with forward-thinking clients worldwide, 
+                            transforming abstract concepts into tangible visual experiences that captivate 
+                            and inspire.
+                        </p>
+                    </div>
+                    
+                    <div class="mt-10 grid grid-cols-3 gap-8">
+                        <div>
+                            <div class="font-serif text-3xl font-bold">8+</div>
+                            <div class="text-velvet-500 text-sm mt-1">Years Experience</div>
+                        </div>
+                        <div>
+                            <div class="font-serif text-3xl font-bold">120+</div>
+                            <div class="text-velvet-500 text-sm mt-1">Projects Done</div>
+                        </div>
+                        <div>
+                            <div class="font-serif text-3xl font-bold">40+</div>
+                            <div class="text-velvet-500 text-sm mt-1">Happy Clients</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact CTA -->
+    <section id="contact" class="py-32 lg:py-48">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+            <span class="text-velvet-500 text-sm font-medium tracking-widest uppercase">Get in Touch</span>
+            <h2 class="font-serif text-5xl md:text-6xl lg:text-7xl font-black mt-6 mb-8">
+                Let's Create<br>Something Bold
+            </h2>
+            <p class="text-velvet-400 text-lg mb-12 max-w-xl mx-auto">
+                Have a project in mind? I'd love to hear about it. Let's discuss how we can bring your vision to life.
+            </p>
+            <a href="mailto:hello@velvet.studio" class="btn-brutalist inline-flex items-center gap-3 px-10 py-5 text-lg font-medium">
+                <span>Start a Project</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+    
+    <!-- Massive Footer -->
+    <footer class="bg-black py-24 lg:py-32">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <!-- Large Brand Name -->
+            <div class="mb-20">
+                <h2 class="font-serif text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-velvet-800">
+                    VELVET
+                </h2>
+            </div>
+            
+            <!-- Footer Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Navigation -->
+                <div>
+                    <h4 class="font-medium text-sm tracking-widest uppercase mb-6 text-velvet-500">Navigation</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#work" class="text-velvet-400 hover:text-velvet-100 transition-colors">Work</a></li>
+                        <li><a href="#about" class="text-velvet-400 hover:text-velvet-100 transition-colors">About</a></li>
+                        <li><a href="#contact" class="text-velvet-400 hover:text-velvet-100 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Social -->
+                <div>
+                    <h4 class="font-medium text-sm tracking-widest uppercase mb-6 text-velvet-500">Social</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-velvet-400 hover:text-velvet-100 transition-colors">Instagram</a></li>
+                        <li><a href="#" class="text-velvet-400 hover:text-velvet-100 transition-colors">Behance</a></li>
+                        <li><a href="#" class="text-velvet-400 hover:text-velvet-100 transition-colors">Dribbble</a></li>
+                        <li><a href="#" class="text-velvet-400 hover:text-velvet-100 transition-colors">LinkedIn</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-medium text-sm tracking-widest uppercase mb-6 text-velvet-500">Contact</h4>
+                    <ul class="space-y-4">
+                        <li><a href="mailto:hello@velvet.studio" class="text-velvet-400 hover:text-velvet-100 transition-colors">hello@velvet.studio</a></li>
+                        <li><span class="text-velvet-400">New York, NY</span></li>
+                    </ul>
+                </div>
+                
+                <!-- Availability -->
+                <div>
+                    <h4 class="font-medium text-sm tracking-widest uppercase mb-6 text-velvet-500">Availability</h4>
+                    <div class="flex items-center gap-3">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        <span class="text-velvet-400">Open for projects</span>
+                    </div>
+                    <p class="text-velvet-600 text-sm mt-4">Currently accepting new work for Q1 2025</p>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-velvet-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-velvet-600 text-sm">
+                    © 2024 Velvet Studio. All rights reserved.
+                </p>
+                <div class="flex gap-6">
+                    <a href="#" class="text-velvet-600 hover:text-velvet-400 text-sm transition-colors">Privacy</a>
+                    <a href="#" class="text-velvet-600 hover:text-velvet-400 text-sm transition-colors">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scroll Animation Script -->
+    <script>
+        // Intersection Observer for fade-up animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Trigger hero animations on load
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.fade-up').forEach(el => {
+                el.classList.add('visible');
+            });
+        });
+    </script>
+</body>
+</html>

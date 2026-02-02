@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetLife | Modern Veterinary Care</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Quicksand', 'sans-serif'],
+                        body: ['Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        pet: {
+                            orange: '#FF8C42',
+                            coral: '#FF6B6B',
+                            teal: '#4ECDC4',
+                            tealDark: '#2A9D8F',
+                            cream: '#FFF8F0',
+                            warm: '#FFE5D4',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 2s infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s infinite',
+                    },
+                    keyframes: {
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .blob {
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+        }
+        .blob-2 {
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(255, 140, 66, 0.15);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #FF8C42 0%, #4ECDC4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .service-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .service-card:hover {
+            transform: translateY(-12px) rotate(1deg);
+            box-shadow: 0 25px 50px -12px rgba(255, 140, 66, 0.25);
+        }
+        .paw-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FF8C42' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .calculator-input {
+            transition: all 0.3s ease;
+        }
+        .calculator-input:focus {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.3);
+        }
+        .pet-btn {
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .pet-btn:hover {
+            transform: scale(1.1) rotate(-2deg);
+        }
+        .pet-btn.active {
+            transform: scale(1.15);
+            box-shadow: 0 10px 30px rgba(255, 140, 66, 0.4);
+        }
+    </style>
+</head>
+<body class="font-body bg-pet-cream paw-pattern" x-data="petLife()">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md shadow-lg shadow-orange-100/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-pet-orange to-pet-coral rounded-2xl flex items-center justify-center mr-3 transform rotate-3">
+                        <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <span class="font-display text-2xl font-bold text-gray-800">Pet<span class="text-pet-orange">Life</span></span>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-600 hover:text-pet-orange transition font-semibold">Home</a>
+                    <a href="#services" class="text-gray-600 hover:text-pet-orange transition font-semibold">Services</a>
+                    <a href="#calculator" class="text-gray-600 hover:text-pet-orange transition font-semibold">Age Calculator</a>
+                    <a href="#team" class="text-gray-600 hover:text-pet-orange transition font-semibold">Our Team</a>
+                    <button @click="scrollToCalculator()" class="bg-gradient-to-r from-pet-orange to-pet-coral text-white px-6 py-2.5 rounded-full font-bold hover:shadow-lg hover:shadow-orange-200 transition transform hover:scale-105">
+                        Book Visit 🐾
+                    </button>
+                </div>
+
+                <button @click="mobileMenu = !mobileMenu" class="md:hidden text-gray-600">
+                    <svg x-show="!mobileMenu" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <svg x-show="mobileMenu" x-cloak class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenu" x-cloak x-transition class="md:hidden bg-white border-t border-orange-100">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#home" @click="mobileMenu = false" class="block text-gray-600 hover:text-pet-orange py-2 font-semibold">Home</a>
+                <a href="#services" @click="mobileMenu = false" class="block text-gray-600 hover:text-pet-orange py-2 font-semibold">Services</a>
+                <a href="#calculator" @click="mobileMenu = false" class="block text-gray-600 hover:text-pet-orange py-2 font-semibold">Age Calculator</a>
+                <a href="#team" @click="mobileMenu = false" class="block text-gray-600 hover:text-pet-orange py-2 font-semibold">Our Team</a>
+                <button @click="mobileMenu = false; scrollToCalculator()" class="w-full bg-gradient-to-r from-pet-orange to-pet-coral text-white px-6 py-3 rounded-full font-bold">
+                    Book Visit 🐾
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-20 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-pet-orange/10 to-pet-teal/10 blob -z-10"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-pet-teal/10 blob-2 -z-10"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="inline-flex items-center bg-pet-warm text-pet-orange px-4 py-2 rounded-full text-sm font-bold mb-6 animate-bounce-slow">
+                        <span class="mr-2">🏆</span> Award-Winning Care Since 2010
+                    </div>
+                    <h1 class="font-display text-5xl lg:text-7xl font-bold text-gray-800 mb-6 leading-tight">
+                        We Care for Your <br>
+                        <span class="gradient-text">Furry Friends</span> 🐕🐈
+                    </h1>
+                    <p class="text-gray-600 text-lg mb-8 leading-relaxed max-w-lg">
+                        State-of-the-art veterinary services with a gentle touch. From routine checkups to emergency care, your pets are family here.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button @click="scrollToCalculator()" class="bg-gradient-to-r from-pet-orange to-pet-coral text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-orange-200 transition transform hover:scale-105 text-center">
+                            Calculate Pet Age 🧮
+                        </button>
+                        <a href="#services" class="border-2 border-pet-teal text-pet-tealDark px-8 py-4 rounded-full font-bold text-lg hover:bg-pet-teal hover:text-white transition text-center">
+                            Our Services
+                        </a>
+                    </div>
+                    <div class="mt-10 flex items-center gap-6">
+                        <div class="flex -space-x-3">
+                            <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=100" class="w-12 h-12 rounded-full border-3 border-white object-cover">
+                            <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=100" class="w-12 h-12 rounded-full border-3 border-white object-cover">
+                            <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=100" class="w-12 h-12 rounded-full border-3 border-white object-cover">
+                        </div>
+                        <div>
+                            <div class="flex text-pet-orange">
+                                <span class="text-2xl">★★★★★</span>
+                            </div>
+                            <p class="text-gray-500 text-sm">Trusted by 10,000+ pet parents</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-pet-orange to-pet-teal rounded-full blur-3xl opacity-30 animate-pulse-slow"></div>
+                    <div class="relative grid grid-cols-2 gap-4">
+                        <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=400" class="rounded-3xl shadow-2xl transform -rotate-3 hover:rotate-0 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400" class="rounded-3xl shadow-2xl transform rotate-3 hover:rotate-0 transition duration-500 mt-8">
+                    </div>
+                    <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-2xl shadow-xl animate-bounce-slow">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <span class="text-2xl">✅</span>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800">Open Now</p>
+                                <p class="text-gray-500 text-sm">24/7 Emergency</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-white relative">
+        <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-pet-cream to-white"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-pet-teal font-bold mb-2 tracking-wider uppercase">What We Offer</p>
+                <h2 class="font-display text-5xl font-bold text-gray-800 mb-4">Our Services 🏥</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Comprehensive care for every stage of your pet's life</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="service-card glass-card p-8 rounded-3xl text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-pet-orange to-pet-coral rounded-2xl flex items-center justify-center mx-auto mb-6 transform rotate-3">
+                        <span class="text-4xl">💉</span>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-gray-800 mb-3">Vaccinations</h3>
+                    <p class="text-gray-600 text-sm">Keep your pets protected with our comprehensive vaccination programs.</p>
+                </div>
+                <div class="service-card glass-card p-8 rounded-3xl text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-pet-teal to-pet-tealDark rounded-2xl flex items-center justify-center mx-auto mb-6 transform -rotate-3">
+                        <span class="text-4xl">🏥</span>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-gray-800 mb-3">Surgery</h3>
+                    <p class="text-gray-600 text-sm">Advanced surgical procedures with state-of-the-art equipment.</p>
+                </div>
+                <div class="service-card glass-card p-8 rounded-3xl text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-pink-400 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 transform rotate-3">
+                        <span class="text-4xl">✂️</span>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-gray-800 mb-3">Grooming</h3>
+                    <p class="text-gray-600 text-sm">Professional grooming services to keep your pet looking their best.</p>
+                </div>
+                <div class="service-card glass-card p-8 rounded-3xl text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-400 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 transform -rotate-3">
+                        <span class="text-4xl">🦷</span>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-gray-800 mb-3">Dental Care</h3>
+                    <p class="text-gray-600 text-sm">Complete dental services including cleaning and extractions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pet Age Calculator Section -->
+    <section id="calculator" class="py-24 bg-gradient-to-br from-pet-orange/5 via-pet-cream to-pet-teal/5">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <p class="text-pet-orange font-bold mb-2 tracking-wider uppercase">Fun Tool</p>
+                <h2 class="font-display text-5xl font-bold text-gray-800 mb-4">Pet Age Calculator 🧮</h2>
+                <p class="text-gray-600">Discover how old your pet is in human years!</p>
+            </div>
+
+            <div class="glass-card rounded-3xl p-8 lg:p-12 shadow-2xl">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- Inputs -->
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-4">Select Your Pet</label>
+                        <div class="flex gap-4 mb-8">
+                            <button @click="petType = 'dog'; calculateAge()" 
+                                    class="pet-btn flex-1 p-6 rounded-2xl border-2 border-gray-200 flex flex-col items-center gap-3"
+                                    :class="petType === 'dog' ? 'active border-pet-orange bg-pet-orange/10' : 'hover:border-pet-orange/50'">
+                                <span class="text-5xl">🐕</span>
+                                <span class="font-bold text-gray-800">Dog</span>
+                            </button>
+                            <button @click="petType = 'cat'; calculateAge()" 
+                                    class="pet-btn flex-1 p-6 rounded-2xl border-2 border-gray-200 flex flex-col items-center gap-3"
+                                    :class="petType === 'cat' ? 'active border-pet-teal bg-pet-teal/10' : 'hover:border-pet-teal/50'">
+                                <span class="text-5xl">🐈</span>
+                                <span class="font-bold text-gray-800">Cat</span>
+                            </button>
+                        </div>
+
+                        <label class="block text-gray-700 font-bold mb-4">Pet's Age (Years)</label>
+                        <input type="number" x-model="petAge" @input="calculateAge()" min="0" max="30" 
+                               class="calculator-input w-full px-6 py-4 border-2 border-gray-200 rounded-2xl text-2xl font-bold text-center text-gray-800 focus:border-pet-orange focus:outline-none"
+                               placeholder="Enter age">
+                        
+                        <input type="range" x-model="petAge" @input="calculateAge()" min="0" max="25" 
+                               class="w-full mt-6 accent-pet-orange cursor-pointer">
+                    </div>
+
+                    <!-- Result -->
+                    <div class="flex flex-col items-center justify-center">
+                        <div class="relative">
+                            <div class="w-48 h-48 rounded-full flex items-center justify-center text-8xl animate-bounce-slow"
+                                 :class="petType === 'dog' ? 'bg-gradient-to-br from-pet-orange to-pet-coral' : 'bg-gradient-to-br from-pet-teal to-pet-tealDark'">
+                                <span x-text="petType === 'dog' ? '🐕' : '🐈'"></span>
+                            </div>
+                            <div class="absolute -top-2 -right-2 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg animate-wiggle">
+                                <span class="text-3xl">❤️</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 text-center">
+                            <p class="text-gray-600 mb-2">In human years, your <span x-text="petType" class="font-bold capitalize"></span> is:</p>
+                            <div class="text-7xl font-display font-bold gradient-text" x-text="humanYears"></div>
+                            <p class="text-gray-500 mt-2">years old</p>
+                        </div>
+
+                        <div class="mt-6 bg-pet-warm px-6 py-3 rounded-full">
+                            <p class="text-pet-orange font-semibold text-sm" x-text="getAgeMessage()"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-pet-teal font-bold mb-2 tracking-wider uppercase">Meet The Experts</p>
+                <h2 class="font-display text-5xl font-bold text-gray-800 mb-4">Our Veterinary Team 👩‍⚕️👨‍⚕️</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-3xl mb-4">
+                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400" class="w-full h-80 object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                            <p class="text-white font-semibold">Specialist in Small Animals</p>
+                        </div>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-gray-800">Dr. Sarah Mitchell</h3>
+                    <p class="text-pet-orange font-semibold">Head Veterinarian</p>
+                </div>
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-3xl mb-4">
+                        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400" class="w-full h-80 object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                            <p class="text-white font-semibold">Surgery Specialist</p>
+                        </div>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-gray-800">Dr. James Chen</h3>
+                    <p class="text-pet-orange font-semibold">Senior Surgeon</p>
+                </div>
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-3xl mb-4">
+                        <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400" class="w-full h-80 object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                            <p class="text-white font-semibold">Exotic Animals Expert</p>
+                        </div>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-gray-800">Dr. Emily Rodriguez</h3>
+                    <p class="text-pet-orange font-semibold">Veterinarian</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emergency CTA -->
+    <section class="py-24 bg-gradient-to-r from-pet-orange to-pet-coral relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-10 left-10 text-9xl">🐾</div>
+            <div class="absolute bottom-10 right-10 text-9xl">🐾</div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-9xl opacity-10">🏥</div>
+        </div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 class="font-display text-5xl font-bold text-white mb-6">Pet Emergency? 🚨</h2>
+            <p class="text-white/90 text-xl mb-8">Our 24/7 emergency line is always open for your furry friends</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="tel:+15551234567" class="bg-white text-pet-orange px-8 py-4 rounded-full font-bold text-xl hover:shadow-xl transition transform hover:scale-105 flex items-center justify-center gap-2">
+                    <span>📞</span> Call Now: (555) 123-4567
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="w-10 h-10 bg-gradient-to-br from-pet-orange to-pet-coral rounded-xl flex items-center justify-center mr-3">
+                        <span class="text-white text-xl">🐾</span>
+                    </div>
+                    <span class="font-display text-2xl font-bold text-white">Pet<span class="text-pet-orange">Life</span></span>
+                </div>
+                <p class="text-gray-400 text-sm">&copy; 2026 PetLife Veterinary. All rights reserved. Made with ❤️ for pets</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function petLife() {
+            return {
+                mobileMenu: false,
+                petType: 'dog',
+                petAge: 3,
+                humanYears: 28,
+                calculateAge() {
+                    const age = parseFloat(this.petAge) || 0;
+                    if (this.petType === 'dog') {
+                        // Dog age calculation (simplified)
+                        if (age <= 1) {
+                            this.humanYears = Math.round(age * 15);
+                        } else if (age <= 2) {
+                            this.humanYears = Math.round(15 + (age - 1) * 9);
+                        } else {
+                            this.humanYears = Math.round(24 + (age - 2) * 5);
+                        }
+                    } else {
+                        // Cat age calculation
+                        if (age <= 1) {
+                            this.humanYears = Math.round(age * 15);
+                        } else if (age <= 2) {
+                            this.humanYears = Math.round(15 + (age - 1) * 10);
+                        } else {
+                            this.humanYears = Math.round(25 + (age - 2) * 4);
+                        }
+                    }
+                },
+                getAgeMessage() {
+                    if (this.humanYears < 13) return "Your pet is just a youngster! 🎾";
+                    if (this.humanYears < 30) return "In their prime years! 💪";
+                    if (this.humanYears < 50) return "A wise and mature companion! 🦴";
+                    return "A golden oldie - give them extra love! ❤️";
+                },
+                scrollToCalculator() {
+                    document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
+    </script>
+</body>
+</html>

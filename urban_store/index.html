@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Store - Streetwear</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Hide scrollbar for carousel */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Product card hover effects */
+        .product-card .add-to-cart {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover .add-to-cart {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .product-card img {
+            transition: transform 0.4s ease;
+        }
+        
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Collection card hover */
+        .collection-card {
+            transition: all 0.3s ease;
+        }
+        
+        .collection-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .collection-card img {
+            transition: transform 0.5s ease;
+        }
+        
+        .collection-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Cart drawer animation */
+        .cart-drawer {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        /* Modal animation */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 0.2s ease-out;
+        }
+        .modal-exit {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .modal-exit-active {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.2s ease-in;
+        }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased" 
+      x-data="{ 
+          cartOpen: false, 
+          cartCount: 0,
+          mobileMenuOpen: false,
+          quickViewOpen: false,
+          selectedProduct: null,
+          products: [
+              { id: 1, name: 'Oversized Hoodie', price: 89.00, originalPrice: null, variant: 'Black / Heavy Cotton', image: 'https://picsum.photos/seed/product1/400/500', badge: 'New' },
+              { id: 2, name: 'Cargo Pants', price: 120.00, originalPrice: null, variant: 'Olive / Relaxed Fit', image: 'https://picsum.photos/seed/product2/400/500', badge: null },
+              { id: 3, name: 'Graphic Tee', price: 45.00, originalPrice: 65.00, variant: 'White / Boxy Fit', image: 'https://picsum.photos/seed/product3/400/500', badge: 'Sale' },
+              { id: 4, name: 'Street Jacket', price: 145.00, originalPrice: null, variant: 'Beige / Windbreaker', image: 'https://picsum.photos/seed/product4/400/500', badge: null },
+              { id: 5, name: 'Bucket Hat', price: 35.00, originalPrice: null, variant: 'Navy / Canvas', image: 'https://picsum.photos/seed/product5/400/500', badge: null }
+          ],
+          addToCart() {
+              this.cartCount++;
+              this.cartOpen = true;
+          },
+          openQuickView(product) {
+              this.selectedProduct = product;
+              this.quickViewOpen = true;
+          }
+      }"
+      :class="{ 'overflow-hidden': cartOpen || quickViewOpen }">
+    
+    <!-- Promo Bar -->
+    <div class="bg-black text-white text-center py-2.5 text-xs font-medium tracking-wider uppercase">
+        Free Shipping on All Orders
+    </div>
+    
+    <!-- Navbar -->
+    <nav class="border-b-2 border-black sticky top-0 bg-white z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Mobile Menu Button -->
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden p-2">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <!-- Desktop Nav Links -->
+                <div class="hidden lg:flex items-center gap-8">
+                    <a href="#shop" class="text-sm font-medium hover:underline">Shop</a>
+                    <a href="#collections" class="text-sm font-medium hover:underline">Collections</a>
+                    <a href="#new" class="text-sm font-medium hover:underline">New</a>
+                </div>
+                
+                <!-- Logo (Center) -->
+                <a href="#" class="absolute left-1/2 transform -translate-x-1/2 text-2xl font-black tracking-tighter uppercase">
+                    Urban
+                </a>
+                
+                <!-- Right Side -->
+                <div class="flex items-center gap-4 ml-auto">
+                    <button class="hidden sm:block p-2 hover:opacity-70 transition-opacity">
+                        <i class="fas fa-search text-lg"></i>
+                    </button>
+                    <button @click="cartOpen = true" class="p-2 hover:opacity-70 transition-opacity relative">
+                        <i class="fas fa-shopping-bag text-lg"></i>
+                        <span x-show="cartCount > 0" 
+                              x-text="cartCount"
+                              x-transition:enter="transition ease-out duration-200"
+                              x-transition:enter-start="scale-0"
+                              x-transition:enter-end="scale-100"
+                              class="absolute -top-1 -right-1 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenuOpen" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 -translate-y-2"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 translate-y-0"
+             x-transition:leave-end="opacity-0 -translate-y-2"
+             class="lg:hidden border-t-2 border-black bg-white">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#shop" @click="mobileMenuOpen = false" class="block py-2 text-sm font-medium border-b border-gray-200">Shop</a>
+                <a href="#collections" @click="mobileMenuOpen = false" class="block py-2 text-sm font-medium border-b border-gray-200">Collections</a>
+                <a href="#new" @click="mobileMenuOpen = false" class="block py-2 text-sm font-medium border-b border-gray-200">New</a>
+                <a href="#" @click="mobileMenuOpen = false" class="block py-2 text-sm font-medium">Search</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Cart Drawer Overlay -->
+    <div x-show="cartOpen" 
+         x-transition:enter="transition-opacity ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition-opacity ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @click="cartOpen = false"
+         class="fixed inset-0 bg-black/50 z-50">
+    </div>
+    
+    <!-- Cart Drawer -->
+    <div x-show="cartOpen"
+         x-transition:enter="transform transition ease-out duration-300"
+         x-transition:enter-start="translate-x-full"
+         x-transition:enter-end="translate-x-0"
+         x-transition:leave="transform transition ease-in duration-200"
+         x-transition:leave-start="translate-x-0"
+         x-transition:leave-end="translate-x-full"
+         class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl flex flex-col">
+        
+        <!-- Cart Header -->
+        <div class="flex items-center justify-between p-6 border-b-2 border-black">
+            <h2 class="text-xl font-black uppercase tracking-tighter">Your Cart (<span x-text="cartCount"></span>)</h2>
+            <button @click="cartOpen = false" class="p-2 hover:opacity-70">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Cart Content -->
+        <div class="flex-1 overflow-y-auto p-6">
+            <template x-if="cartCount === 0">
+                <div class="text-center py-12">
+                    <i class="fas fa-shopping-bag text-6xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Your cart is empty</p>
+                    <button @click="cartOpen = false" class="mt-4 text-sm font-bold underline">Continue Shopping</button>
+                </div>
+            </template>
+            
+            <template x-if="cartCount > 0">
+                <div class="space-y-4">
+                    <template x-for="i in cartCount" :key="i">
+                        <div class="flex gap-4 p-4 border-2 border-black">
+                            <div class="w-20 h-20 bg-gray-200 flex-shrink-0">
+                                <img :src="products[(i - 1) % products.length].image" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-bold" x-text="products[(i - 1) % products.length].name"></h4>
+                                <p class="text-sm text-gray-600" x-text="products[(i - 1) % products.length].variant"></p>
+                                <p class="font-black mt-1" x-text="'$' + products[(i - 1) % products.length].price.toFixed(2)"></p>
+                            </div>
+                            <button @click="cartCount--" class="text-gray-400 hover:text-red-600">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+        
+        <!-- Cart Footer -->
+        <div class="border-t-2 border-black p-6" x-show="cartCount > 0">
+            <div class="flex justify-between mb-4">
+                <span class="font-medium">Subtotal</span>
+                <span class="font-black" x-text="'$' + (cartCount * 89).toFixed(2)"></span>
+            </div>
+            <button class="w-full bg-black text-white py-4 font-bold text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors">
+                Checkout
+            </button>
+            <p class="text-center text-xs text-gray-500 mt-3">Shipping & taxes calculated at checkout</p>
+        </div>
+    </div>
+    
+    <!-- Quick View Modal Overlay -->
+    <div x-show="quickViewOpen" 
+         x-transition:enter="transition-opacity ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition-opacity ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @click="quickViewOpen = false"
+         class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    </div>
+    
+    <!-- Quick View Modal -->
+    <div x-show="quickViewOpen"
+         x-transition:enter="transform transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="transform transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl bg-white z-50 shadow-2xl max-h-[90vh] overflow-y-auto">
+        
+        <div class="grid md:grid-cols-2">
+            <!-- Modal Image -->
+            <div class="relative">
+                <img :src="selectedProduct ? selectedProduct.image : ''" 
+                     :alt="selectedProduct ? selectedProduct.name : ''"
+                     class="w-full h-96 md:h-full object-cover">
+                <div x-show="selectedProduct && selectedProduct.badge" 
+                     x-text="selectedProduct ? selectedProduct.badge : ''"
+                     :class="selectedProduct && selectedProduct.badge === 'Sale' ? 'bg-red-600' : 'bg-black'"
+                     class="absolute top-4 left-4 text-white px-3 py-1 text-xs font-bold uppercase">
+                </div>
+            </div>
+            
+            <!-- Modal Content -->
+            <div class="p-8 flex flex-col">
+                <button @click="quickViewOpen = false" class="absolute top-4 right-4 p-2 hover:opacity-70">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+                
+                <template x-if="selectedProduct">
+                    <div class="flex-1">
+                        <h2 class="text-3xl font-black uppercase tracking-tighter mb-2" x-text="selectedProduct.name"></h2>
+                        <p class="text-gray-600 mb-4" x-text="selectedProduct.variant"></p>
+                        
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="text-2xl font-black" x-text="'$' + selectedProduct.price.toFixed(2)"></span>
+                            <span x-show="selectedProduct.originalPrice" 
+                                  x-text="'$' + selectedProduct.originalPrice.toFixed(2)"
+                                  class="text-gray-400 line-through text-lg"></span>
+                            <span x-show="selectedProduct.originalPrice" 
+                                  class="bg-red-600 text-white px-2 py-1 text-xs font-bold uppercase">
+                                Sale
+                            </span>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-6 leading-relaxed">
+                            Premium streetwear piece crafted with high-quality materials. Features a relaxed fit 
+                            perfect for everyday wear. Limited edition drop - get yours before it's gone.
+                        </p>
+                        
+                        <!-- Size Selection -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold uppercase tracking-wider mb-3">Size</label>
+                            <div class="flex gap-2">
+                                <button class="w-12 h-12 border-2 border-black font-bold hover:bg-black hover:text-white transition-colors">S</button>
+                                <button class="w-12 h-12 border-2 border-black font-bold hover:bg-black hover:text-white transition-colors">M</button>
+                                <button class="w-12 h-12 border-2 border-black font-bold bg-black text-white">L</button>
+                                <button class="w-12 h-12 border-2 border-black font-bold hover:bg-black hover:text-white transition-colors">XL</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Quantity -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold uppercase tracking-wider mb-3">Quantity</label>
+                            <div class="flex items-center border-2 border-black w-32">
+                                <button class="w-10 h-10 font-bold hover:bg-gray-100">-</button>
+                                <input type="text" value="1" class="w-12 h-10 text-center font-bold border-x-2 border-black focus:outline-none">
+                                <button class="w-10 h-10 font-bold hover:bg-gray-100">+</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Add to Cart Button -->
+                        <button @click="addToCart(); quickViewOpen = false" 
+                                class="w-full bg-black text-white py-4 font-bold text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors">
+                            Add to Cart
+                        </button>
+                        
+                        <a href="#" class="block text-center mt-4 text-sm font-bold underline">View Full Details</a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hero Section - Split Screen -->
+    <section id="new" class="border-b-2 border-black">
+        <div class="grid lg:grid-cols-2 min-h-[600px] lg:min-h-[700px]">
+            <!-- Left Side - Text -->
+            <div class="flex flex-col justify-center px-8 lg:px-16 py-16 lg:py-0 order-2 lg:order-1">
+                <span class="text-sm font-bold tracking-widest uppercase mb-4">Spring / Summer 2025</span>
+                <h1 class="text-6xl sm:text-7xl lg:text-8xl font-black leading-none tracking-tighter mb-6">
+                    NEW<br>DROP
+                </h1>
+                <p class="text-gray-600 text-lg mb-8 max-w-md">
+                    Fresh styles dropping weekly. Limited quantities available. Don't miss out on the latest streetwear essentials.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#shop" class="bg-black text-white px-8 py-4 font-bold text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors">
+                        Shop Now
+                    </a>
+                    <a href="#collections" class="border-2 border-black px-8 py-4 font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white transition-colors">
+                        View Lookbook
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Side - Image -->
+            <div class="relative order-1 lg:order-2 border-b-2 lg:border-b-0 lg:border-l-2 border-black">
+                <img src="https://picsum.photos/seed/fashion/800/1000" 
+                     alt="New Drop Fashion" 
+                     class="w-full h-full object-cover min-h-[400px] lg:min-h-full">
+                <div class="absolute bottom-4 right-4 bg-white px-4 py-2 border-2 border-black">
+                    <span class="text-xs font-bold uppercase">New Arrival</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Product Carousel -->
+    <section id="shop" class="py-16 lg:py-24 border-b-2 border-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="flex items-center justify-between mb-10">
+                <h2 class="text-3xl font-black uppercase tracking-tighter">Trending Now</h2>
+                <div class="flex gap-2">
+                    <button class="w-10 h-10 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="w-10 h-10 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Horizontal Scroll Container -->
+            <div class="flex gap-6 overflow-x-auto scrollbar-hide pb-4 -mx-4 px-4">
+                <template x-for="product in products" :key="product.id">
+                    <div class="product-card flex-shrink-0 w-72 group">
+                        <div class="relative overflow-hidden border-2 border-black mb-4 cursor-pointer"
+                             @click="openQuickView(product)">
+                            <img :src="product.image" 
+                                 :alt="product.name"
+                                 class="w-full h-80 object-cover">
+                            <div class="absolute bottom-0 left-0 right-0 p-4">
+                                <button @click.stop="addToCart()" 
+                                        class="add-to-cart w-full bg-black text-white py-3 font-bold text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors">
+                                    Add to Cart
+                                </button>
+                            </div>
+                            <div x-show="product.badge" 
+                                 x-text="product.badge"
+                                 :class="product.badge === 'Sale' ? 'bg-red-600' : 'bg-black'"
+                                 class="absolute top-4 left-4 text-white px-3 py-1 text-xs font-bold uppercase">
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-lg" x-text="product.name"></h3>
+                        <p class="text-gray-600 text-sm mb-1" x-text="product.variant"></p>
+                        <div class="flex items-center gap-2">
+                            <p class="font-black text-xl" x-text="'$' + product.price.toFixed(2)"></p>
+                            <p x-show="product.originalPrice" 
+                               x-text="'$' + product.originalPrice.toFixed(2)"
+                               class="text-gray-400 line-through text-sm"></p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Collection Grid -->
+    <section id="collections" class="py-16 lg:py-24 border-b-2 border-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-black uppercase tracking-tighter mb-10">Shop by Category</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Men -->
+                <a href="#" class="collection-card relative overflow-hidden border-2 border-black aspect-[4/3]">
+                    <img src="https://picsum.photos/seed/men/600/450" 
+                         alt="Men's Collection" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/30 hover:bg-black/40 transition-colors"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <h3 class="text-white text-3xl font-black uppercase tracking-tighter">Men</h3>
+                        <span class="text-white/80 text-sm font-medium">Shop Collection →</span>
+                    </div>
+                </a>
+                
+                <!-- Women -->
+                <a href="#" class="collection-card relative overflow-hidden border-2 border-black aspect-[4/3]">
+                    <img src="https://picsum.photos/seed/women/600/450" 
+                         alt="Women's Collection" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/30 hover:bg-black/40 transition-colors"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <h3 class="text-white text-3xl font-black uppercase tracking-tighter">Women</h3>
+                        <span class="text-white/80 text-sm font-medium">Shop Collection →</span>
+                    </div>
+                </a>
+                
+                <!-- Accessories -->
+                <a href="#" class="collection-card relative overflow-hidden border-2 border-black aspect-[4/3]">
+                    <img src="https://picsum.photos/seed/accessories/600/450" 
+                         alt="Accessories" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/30 hover:bg-black/40 transition-colors"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <h3 class="text-white text-3xl font-black uppercase tracking-tighter">Accessories</h3>
+                        <span class="text-white/80 text-sm font-medium">Shop Collection →</span>
+                    </div>
+                </a>
+                
+                <!-- Sale -->
+                <a href="#" class="collection-card relative overflow-hidden border-2 border-black aspect-[4/3]">
+                    <img src="https://picsum.photos/seed/sale/600/450" 
+                         alt="Sale" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-red-600/80 hover:bg-red-600/90 transition-colors"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <h3 class="text-white text-3xl font-black uppercase tracking-tighter">Sale</h3>
+                        <span class="text-white/90 text-sm font-medium">Up to 50% Off →</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter -->
+    <section id="newsletter" class="py-16 lg:py-24">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="border-4 border-black p-8 lg:p-12 text-center">
+                <h2 class="text-3xl lg:text-4xl font-black uppercase tracking-tighter mb-4">
+                    Join the Movement
+                </h2>
+                <p class="text-gray-600 mb-8">
+                    Subscribe for exclusive drops, early access to sales, and streetwear news.
+                </p>
+                <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" @submit.prevent="alert('Thanks for subscribing!')">
+                    <input type="email" 
+                           placeholder="Enter your email" 
+                           class="flex-1 px-6 py-4 border-2 border-black font-medium focus:outline-none focus:ring-2 focus:ring-black"
+                           required>
+                    <button type="submit" 
+                            class="bg-black text-white px-8 py-4 font-bold text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors whitespace-nowrap">
+                        Subscribe
+                    </button>
+                </form>
+                <p class="text-xs text-gray-500 mt-4">By subscribing, you agree to our Privacy Policy.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-10 mb-12">
+                <!-- Brand -->
+                <div class="md:col-span-1">
+                    <a href="#" class="text-2xl font-black tracking-tighter uppercase mb-4 block">
+                        Urban
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Premium streetwear for the bold. Designed in New York.
+                    </p>
+                </div>
+                
+                <!-- Shop -->
+                <div>
+                    <h4 class="font-bold text-sm uppercase tracking-wider mb-4">Shop</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#new" class="text-gray-400 hover:text-white text-sm transition-colors">New Arrivals</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Men</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Women</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Accessories</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Sale</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Help -->
+                <div>
+                    <h4 class="font-bold text-sm uppercase tracking-wider mb-4">Help</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Shipping</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Returns</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Size Guide</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Social -->
+                <div>
+                    <h4 class="font-bold text-sm uppercase tracking-wider mb-4">Follow Us</h4>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 border border-gray-600 flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 border border-gray-600 flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 border border-gray-600 flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 border border-gray-600 flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-gray-500 text-sm">
+                    © 2024 Urban Store. All rights reserved.
+                </p>
+                <div class="flex gap-6">
+                    <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

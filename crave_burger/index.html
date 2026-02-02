@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crave Burger | The Ultimate Burger Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Bebas Neue', 'sans-serif'],
+                        body: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        crave: {
+                            orange: '#FF6B00',
+                            red: '#E63946',
+                            yellow: '#FFB703',
+                            dark: '#1A1A1A',
+                            cream: '#FFF8E7',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 2s infinite',
+                        'pulse-fast': 'pulse 1s infinite',
+                        'shake': 'shake 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '25%': { transform: 'translateX(-5px)' },
+                            '75%': { transform: 'translateX(5px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .pattern {
+            background-color: #1A1A1A;
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+        .burger-shadow {
+            filter: drop-shadow(0 20px 40px rgba(255, 107, 0, 0.3));
+        }
+        .topping-checkbox:checked + div {
+            background-color: #FF6B00;
+            border-color: #FF6B00;
+        }
+        .topping-checkbox:checked + div .check-icon {
+            opacity: 1;
+        }
+        .price-tag {
+            background: linear-gradient(135deg, #FF6B00 0%, #E63946 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B00 0%, #E63946 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.4);
+        }
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+        .menu-card:hover {
+            transform: translateY(-10px);
+        }
+        .cooking-animation {
+            animation: cooking 2s ease-in-out infinite;
+        }
+        @keyframes cooking {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+    </style>
+</head>
+<body class="font-body bg-crave-cream" x-data="craveBurger()">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-40 bg-crave-dark/95 backdrop-blur-md border-b border-orange-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center">
+                    <span class="font-display text-4xl text-crave-orange tracking-wider">CRAVE</span>
+                    <span class="font-display text-4xl text-white tracking-wider ml-2">BURGER</span>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-white hover:text-crave-orange transition font-medium">HOME</a>
+                    <a href="#menu" class="text-white hover:text-crave-orange transition font-medium">MENU</a>
+                    <a href="#builder" class="text-white hover:text-crave-orange transition font-medium">BUILD YOUR OWN</a>
+                    <a href="#locations" class="text-white hover:text-crave-orange transition font-medium">LOCATIONS</a>
+                    <button @click="scrollToBuilder()" class="btn-primary text-white px-6 py-2.5 rounded-full font-bold">
+                        ORDER NOW
+                    </button>
+                </div>
+
+                <button @click="mobileMenu = !mobileMenu" class="md:hidden text-white">
+                    <svg x-show="!mobileMenu" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <svg x-show="mobileMenu" x-cloak class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenu" x-cloak x-transition class="md:hidden bg-crave-dark border-t border-orange-500/20">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#home" @click="mobileMenu = false" class="block text-white hover:text-crave-orange py-2">HOME</a>
+                <a href="#menu" @click="mobileMenu = false" class="block text-white hover:text-crave-orange py-2">MENU</a>
+                <a href="#builder" @click="mobileMenu = false" class="block text-white hover:text-crave-orange py-2">BUILD YOUR OWN</a>
+                <a href="#locations" @click="mobileMenu = false" class="block text-white hover:text-crave-orange py-2">LOCATIONS</a>
+                <button @click="mobileMenu = false; scrollToBuilder()" class="w-full btn-primary text-white px-6 py-3 rounded-full font-bold">
+                    ORDER NOW
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pattern min-h-screen flex items-center pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="inline-block bg-crave-orange text-white px-4 py-1 rounded-full text-sm font-bold mb-6 animate-bounce-slow">
+                        🔥 NEW: SPICY VOLCANO BURGER
+                    </div>
+                    <h1 class="font-display text-6xl md:text-8xl text-white mb-6 leading-none">
+                        BURGERS THAT<br>
+                        <span class="text-crave-orange">CRAVE</span> YOU BACK
+                    </h1>
+                    <p class="text-gray-300 text-lg mb-8 max-w-lg">
+                        Hand-crafted, flame-grilled perfection. Made with 100% premium beef and fresh ingredients daily.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button @click="scrollToBuilder()" class="btn-primary text-white px-8 py-4 rounded-full font-bold text-lg text-center">
+                            BUILD YOUR BURGER
+                        </button>
+                        <a href="#menu" class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg text-center hover:bg-white hover:text-crave-dark transition">
+                            VIEW MENU
+                        </a>
+                    </div>
+                    <div class="mt-10 flex items-center gap-6">
+                        <div class="flex -space-x-4">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="w-12 h-12 rounded-full border-2 border-crave-dark">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" class="w-12 h-12 rounded-full border-2 border-crave-dark">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100" class="w-12 h-12 rounded-full border-2 border-crave-dark">
+                        </div>
+                        <div>
+                            <div class="flex text-crave-yellow">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            </div>
+                            <p class="text-gray-400 text-sm">4.9/5 from 2,000+ reviews</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-crave-orange/20 rounded-full blur-3xl"></div>
+                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800" alt="Delicious Burger" class="relative burger-shadow rounded-3xl w-full animate-bounce-slow">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-crave-orange font-bold mb-2 tracking-wider">OUR SIGNATURES</p>
+                <h2 class="font-display text-5xl md:text-6xl text-crave-dark mb-4">CRAVE-WORTHY MENU</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Each burger is crafted with passion and the freshest ingredients.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <template x-for="item in menuItems" :key="item.id">
+                    <div class="menu-card bg-crave-cream rounded-3xl overflow-hidden shadow-lg transition-all duration-300">
+                        <div class="relative h-56 overflow-hidden">
+                            <img :src="item.image" :alt="item.name" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                            <div x-show="item.spicy" class="absolute top-4 left-4 bg-crave-red text-white px-3 py-1 rounded-full text-sm font-bold">
+                                🔥 SPICY
+                            </div>
+                            <div class="absolute top-4 right-4 price-tag text-white px-4 py-2 rounded-full font-bold text-lg" x-text="'$' + item.price"></div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-display text-2xl text-crave-dark mb-2" x-text="item.name"></h3>
+                            <p class="text-gray-600 text-sm mb-4" x-text="item.description"></p>
+                            <button @click="orderItem(item)" class="w-full btn-primary text-white py-3 rounded-full font-bold hover:shadow-lg transition">
+                                ORDER NOW
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- Burger Builder Section -->
+    <section id="builder" class="py-24 bg-crave-dark pattern">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <p class="text-crave-orange font-bold mb-2 tracking-wider">CUSTOMIZE</p>
+                <h2 class="font-display text-5xl md:text-6xl text-white mb-4">BUILD YOUR DREAM BURGER</h2>
+                <p class="text-gray-400">Select your toppings and watch the price update in real-time!</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Builder Controls -->
+                <div class="bg-white rounded-3xl p-8">
+                    <h3 class="font-display text-3xl text-crave-dark mb-6">Choose Toppings</h3>
+                    
+                    <!-- Base Price -->
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-100">
+                        <span class="text-gray-600">Base Burger</span>
+                        <span class="font-bold text-crave-dark">$8.00</span>
+                    </div>
+
+                    <!-- Toppings -->
+                    <div class="space-y-4 mb-8">
+                        <template x-for="topping in toppings" :key="topping.id">
+                            <label class="flex items-center justify-between cursor-pointer group">
+                                <div class="flex items-center">
+                                    <input type="checkbox" 
+                                           x-model="topping.selected" 
+                                           @change="updateTotal()"
+                                           class="topping-checkbox hidden">
+                                    <div class="w-6 h-6 border-2 border-gray-300 rounded flex items-center justify-center mr-3 transition group-hover:border-crave-orange">
+                                        <svg class="check-icon w-4 h-4 text-white opacity-0 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-gray-700" x-text="topping.name"></span>
+                                </div>
+                                <span class="font-medium text-crave-orange" x-text="'+ $' + topping.price.toFixed(2)"></span>
+                            </label>
+                        </template>
+                    </div>
+
+                    <!-- Total -->
+                    <div class="bg-crave-cream rounded-2xl p-6 mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-display text-2xl text-crave-dark">TOTAL</span>
+                            <span class="font-display text-4xl text-crave-orange" x-text="'$' + totalPrice.toFixed(2)"></span>
+                        </div>
+                    </div>
+
+                    <!-- Order Button -->
+                    <button @click="placeOrder()" 
+                            :disabled="isCooking"
+                            class="w-full btn-primary text-white py-4 rounded-full font-bold text-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span x-show="!isCooking">ORDER NOW</span>
+                        <span x-show="isCooking" class="flex items-center gap-2">
+                            <svg class="cooking-animation w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                            </svg>
+                            COOKING...
+                        </span>
+                    </button>
+                </div>
+
+                <!-- Burger Preview -->
+                <div class="flex flex-col items-center justify-center">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=600" alt="Burger Base" class="w-80 rounded-3xl shadow-2xl">
+                        
+                        <!-- Selected Toppings Overlay -->
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <template x-for="topping in selectedToppings" :key="topping.id">
+                                <div x-transition class="bg-crave-orange/90 text-white px-4 py-2 rounded-full text-sm font-bold mb-2 animate-shake">
+                                    <span x-text="topping.icon + ' ' + topping.name"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <!-- Selected List -->
+                    <div x-show="selectedToppings.length > 0" x-transition class="mt-8 bg-white/10 backdrop-blur rounded-2xl p-6 w-full max-w-sm">
+                        <h4 class="text-white font-bold mb-3">Your Selection:</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-white/20 text-white px-3 py-1 rounded-full text-sm">🍔 Base Burger</span>
+                            <template x-for="topping in selectedToppings" :key="topping.id">
+                                <span class="bg-crave-orange text-white px-3 py-1 rounded-full text-sm" x-text="topping.icon + ' ' + topping.name"></span>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Locations Section -->
+    <section id="locations" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-crave-orange font-bold mb-2 tracking-wider">FIND US</p>
+                <h2 class="font-display text-5xl md:text-6xl text-crave-dark mb-4">OUR LOCATIONS</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-crave-cream rounded-3xl p-8 text-center hover:shadow-xl transition">
+                    <div class="w-16 h-16 bg-crave-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-2xl text-crave-dark mb-2">Downtown</h3>
+                    <p class="text-gray-600 mb-4">123 Main Street<br>New York, NY 10001</p>
+                    <p class="text-crave-orange font-bold">Open 10AM - 11PM</p>
+                </div>
+                <div class="bg-crave-cream rounded-3xl p-8 text-center hover:shadow-xl transition">
+                    <div class="w-16 h-16 bg-crave-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-2xl text-crave-dark mb-2">Westside</h3>
+                    <p class="text-gray-600 mb-4">456 Ocean Ave<br>Los Angeles, CA 90001</p>
+                    <p class="text-crave-orange font-bold">Open 11AM - 12AM</p>
+                </div>
+                <div class="bg-crave-cream rounded-3xl p-8 text-center hover:shadow-xl transition">
+                    <div class="w-16 h-16 bg-crave-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-2xl text-crave-dark mb-2">Midtown</h3>
+                    <p class="text-gray-600 mb-4">789 Burger Blvd<br>Chicago, IL 60601</p>
+                    <p class="text-crave-orange font-bold">Open 10AM - 10PM</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-crave-dark py-12 border-t border-orange-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <span class="font-display text-3xl text-crave-orange tracking-wider">CRAVE</span>
+                    <span class="font-display text-3xl text-white tracking-wider ml-2">BURGER</span>
+                </div>
+                <p class="text-gray-400 text-sm">&copy; 2026 Crave Burger. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div x-show="showToast" x-cloak x-transition
+         class="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
+        <div class="bg-crave-dark text-white px-8 py-4 rounded-full shadow-2xl flex items-center gap-3 border border-crave-orange">
+            <span class="text-2xl">🍔</span>
+            <div>
+                <p class="font-bold" x-text="toastMessage"></p>
+                <p x-show="toastSubmessage" class="text-sm text-gray-400" x-text="toastSubmessage"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function craveBurger() {
+            return {
+                mobileMenu: false,
+                isCooking: false,
+                showToast: false,
+                toastMessage: '',
+                toastSubmessage: '',
+                totalPrice: 8.00,
+                menuItems: [
+                    {
+                        id: 1,
+                        name: 'CLASSIC CRAVE',
+                        description: 'Premium beef patty, lettuce, tomato, onion, pickles, special sauce',
+                        price: 12,
+                        image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=600',
+                        spicy: false
+                    },
+                    {
+                        id: 2,
+                        name: 'SPICY VOLCANO',
+                        description: 'Double patty, jalapeños, pepper jack, volcano sauce, lava cheese',
+                        price: 16,
+                        image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=600',
+                        spicy: true
+                    },
+                    {
+                        id: 3,
+                        name: 'BACON OVERLOAD',
+                        description: 'Beef patty, crispy bacon, cheddar, BBQ sauce, onion rings',
+                        price: 15,
+                        image: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=600',
+                        spicy: false
+                    },
+                    {
+                        id: 4,
+                        name: 'MUSHROOM SWISS',
+                        description: 'Beef patty, sautéed mushrooms, Swiss cheese, truffle aioli',
+                        price: 14,
+                        image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600',
+                        spicy: false
+                    },
+                    {
+                        id: 5,
+                        name: 'BBQ RANCH',
+                        description: 'Grilled chicken, bacon, ranch, BBQ sauce, coleslaw',
+                        price: 13,
+                        image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=600',
+                        spicy: false
+                    },
+                    {
+                        id: 6,
+                        name: 'INFERNO',
+                        description: 'Double spicy patties, ghost pepper cheese, hot sauce, habaneros',
+                        price: 18,
+                        image: 'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=600',
+                        spicy: true
+                    }
+                ],
+                toppings: [
+                    { id: 1, name: 'Extra Cheese', price: 1.50, selected: false, icon: '🧀' },
+                    { id: 2, name: 'Bacon', price: 2.00, selected: false, icon: '🥓' },
+                    { id: 3, name: 'Avocado', price: 1.50, selected: false, icon: '🥑' },
+                    { id: 4, name: 'Fried Egg', price: 1.00, selected: false, icon: '🍳' },
+                    { id: 5, name: 'Mushrooms', price: 1.00, selected: false, icon: '🍄' },
+                    { id: 6, name: 'Jalapeños', price: 0.75, selected: false, icon: '🌶️' },
+                    { id: 7, name: 'Onion Rings', price: 1.50, selected: false, icon: '🧅' },
+                    { id: 8, name: 'Spicy Sauce', price: 0.50, selected: false, icon: '🔥' },
+                ],
+                get selectedToppings() {
+                    return this.toppings.filter(t => t.selected);
+                },
+                updateTotal() {
+                    const toppingsTotal = this.toppings
+                        .filter(t => t.selected)
+                        .reduce((sum, t) => sum + t.price, 0);
+                    this.totalPrice = 8.00 + toppingsTotal;
+                },
+                placeOrder() {
+                    this.isCooking = true;
+                    setTimeout(() => {
+                        this.isCooking = false;
+                        this.showToastMessage('Order Placed!', 'Your burger is being prepared with love 🔥');
+                        // Reset
+                        this.toppings.forEach(t => t.selected = false);
+                        this.updateTotal();
+                    }, 2000);
+                },
+                orderItem(item) {
+                    this.showToastMessage(`${item.name} Added!`, 'Proceeding to checkout...');
+                },
+                showToastMessage(message, submessage = '') {
+                    this.toastMessage = message;
+                    this.toastSubmessage = submessage;
+                    this.showToast = true;
+                    setTimeout(() => {
+                        this.showToast = false;
+                    }, 3000);
+                },
+                scrollToBuilder() {
+                    document.getElementById('builder').scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
+    </script>
+</body>
+</html>

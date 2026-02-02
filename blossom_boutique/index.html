@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blossom Boutique | Elegant Fashion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        blossom: {
+                            pink: '#FFC0CB',
+                            pinkDark: '#FFB6C1',
+                            blush: '#FFE4E1',
+                            beige: '#F5F5DC',
+                            cream: '#FFFDD0',
+                            rose: '#E6A8A6',
+                            sage: '#9CAF88',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .soft-gradient {
+            background: linear-gradient(135deg, #FFFDD0 0%, #FFE4E1 50%, #FFC0CB 100%);
+        }
+        .product-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px -12px rgba(255, 192, 203, 0.4);
+        }
+        .color-swatch {
+            transition: all 0.3s ease;
+        }
+        .color-swatch:hover {
+            transform: scale(1.2);
+        }
+        .color-swatch.active {
+            transform: scale(1.3);
+            box-shadow: 0 0 0 3px white, 0 0 0 5px currentColor;
+        }
+        .elegant-pattern {
+            background-image: radial-gradient(circle at 1px 1px, rgba(255, 192, 203, 0.15) 1px, transparent 0);
+            background-size: 30px 30px;
+        }
+        .hero-text {
+            text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="font-sans bg-blossom-cream elegant-pattern" x-data="blossomBoutique()">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center">
+                    <svg class="w-8 h-8 text-blossom-rose mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <span class="font-serif text-3xl font-bold text-gray-800">Blossom</span>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-600 hover:text-blossom-rose transition">Home</a>
+                    <a href="#featured" class="text-gray-600 hover:text-blossom-rose transition">Featured</a>
+                    <a href="#arrivals" class="text-gray-600 hover:text-blossom-rose transition">New Arrivals</a>
+                    <a href="#instagram" class="text-gray-600 hover:text-blossom-rose transition">Gallery</a>
+                    <button @click="scrollToFeatured()" class="bg-blossom-rose text-white px-6 py-2.5 rounded-full hover:bg-blossom-pinkDark transition">
+                        Shop Now
+                    </button>
+                </div>
+
+                <button @click="mobileMenu = !mobileMenu" class="md:hidden text-gray-600">
+                    <svg x-show="!mobileMenu" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <svg x-show="mobileMenu" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenu" x-cloak x-transition class="md:hidden bg-white border-t border-gray-100">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#home" @click="mobileMenu = false" class="block text-gray-600 hover:text-blossom-rose py-2">Home</a>
+                <a href="#featured" @click="mobileMenu = false" class="block text-gray-600 hover:text-blossom-rose py-2">Featured</a>
+                <a href="#arrivals" @click="mobileMenu = false" class="block text-gray-600 hover:text-blossom-rose py-2">New Arrivals</a>
+                <a href="#instagram" @click="mobileMenu = false" class="block text-gray-600 hover:text-blossom-rose py-2">Gallery</a>
+                <button @click="mobileMenu = false; scrollToFeatured()" class="w-full bg-blossom-rose text-white px-6 py-3 rounded-full">
+                    Shop Now
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-20 soft-gradient">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-center lg:text-left">
+                    <p class="text-blossom-rose font-medium mb-4 tracking-widest uppercase">Spring Collection 2026</p>
+                    <h1 class="font-serif text-5xl lg:text-7xl font-light text-gray-800 mb-6 hero-text leading-tight">
+                        Embrace Your <br>
+                        <span class="font-semibold italic text-blossom-rose">Inner Elegance</span>
+                    </h1>
+                    <p class="text-gray-600 text-lg mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0">
+                        Discover timeless pieces designed for the modern woman. Soft pastels, flowing silhouettes, and exquisite details await.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <button @click="scrollToFeatured()" class="bg-blossom-rose text-white px-8 py-4 rounded-full font-medium hover:bg-blossom-pinkDark transition shadow-lg">
+                            Explore Collection
+                        </button>
+                        <a href="#arrivals" class="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-full font-medium hover:border-blossom-rose hover:text-blossom-rose transition">
+                            New Arrivals
+                        </a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-blossom-pink/20 rounded-full blur-3xl"></div>
+                    <img src="https://picsum.photos/seed/woman_lifestyle_fashion/1920/1080" alt="Fashion Model" class="relative rounded-3xl shadow-2xl w-full">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Product with Color Swatcher -->
+    <section id="featured" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-blossom-rose font-medium mb-2 tracking-widest uppercase">Featured Item</p>
+                <h2 class="font-serif text-5xl font-light text-gray-800">The Silk Collection</h2>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Product Image -->
+                <div class="relative">
+                    <div class="absolute -inset-4 bg-gradient-to-br from-blossom-pink/20 to-blossom-sage/20 rounded-3xl blur-xl"></div>
+                    <img :src="featuredProduct.images[featuredProduct.selectedColor]" 
+                         :alt="featuredProduct.colors[featuredProduct.selectedColor].name + ' Silk Dress'"
+                         class="relative rounded-3xl shadow-xl w-full transition-all duration-500">
+                </div>
+
+                <!-- Product Details -->
+                <div>
+                    <h3 class="font-serif text-4xl font-light text-gray-800 mb-2" 
+                        x-text="featuredProduct.colors[featuredProduct.selectedColor].name + ' Silk Dress'"></h3>
+                    <p class="text-3xl font-serif text-blossom-rose mb-6" x-text="'$' + featuredProduct.price"></p>
+                    
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        Crafted from the finest silk, this dress embodies effortless elegance. 
+                        The flowing silhouette drapes beautifully, while delicate details add a touch of romance. 
+                        Perfect for garden parties, weddings, or simply feeling beautiful.
+                    </p>
+
+                    <!-- Color Swatcher -->
+                    <div class="mb-8">
+                        <p class="font-medium text-gray-700 mb-4">Select Color:</p>
+                        <div class="flex gap-4">
+                            <template x-for="(color, key) in featuredProduct.colors" :key="key">
+                                <button @click="featuredProduct.selectedColor = key"
+                                        class="color-swatch w-12 h-12 rounded-full"
+                                        :class="featuredProduct.selectedColor === key ? 'active' : ''"
+                                        :style="`background-color: ${color.hex}; color: ${color.hex}`"
+                                        :title="color.name">
+                                </button>
+                            </template>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-3" x-text="'Selected: ' + featuredProduct.colors[featuredProduct.selectedColor].name"></p>
+                    </div>
+
+                    <!-- Size Selector -->
+                    <div class="mb-8">
+                        <p class="font-medium text-gray-700 mb-4">Select Size:</p>
+                        <div class="flex gap-3">
+                            <template x-for="size in featuredProduct.sizes" :key="size">
+                                <button @click="featuredProduct.selectedSize = size"
+                                        class="w-12 h-12 rounded-lg border-2 font-medium transition"
+                                        :class="featuredProduct.selectedSize === size ? 'border-blossom-rose bg-blossom-rose text-white' : 'border-gray-300 text-gray-700 hover:border-blossom-rose'"
+                                        x-text="size"></button>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex gap-4">
+                        <button @click="addToCart(featuredProduct)" class="flex-1 bg-blossom-rose text-white py-4 rounded-full font-medium hover:bg-blossom-pinkDark transition shadow-lg">
+                            Add to Bag
+                        </button>
+                        <button class="w-14 h-14 border-2 border-gray-300 rounded-full flex items-center justify-center hover:border-blossom-rose hover:text-blossom-rose transition">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Arrivals Section -->
+    <section id="arrivals" class="py-24 bg-blossom-blush">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-blossom-rose font-medium mb-2 tracking-widest uppercase">Just In</p>
+                <h2 class="font-serif text-5xl font-light text-gray-800">New Arrivals</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <template x-for="item in newArrivals" :key="item.id">
+                    <div class="product-card bg-white rounded-2xl overflow-hidden shadow-sm group cursor-pointer" @click="quickView(item)">
+                        <div class="relative aspect-[3/4] overflow-hidden">
+                            <img :src="item.image" :alt="item.name" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <div x-show="item.new" class="absolute top-3 left-3 bg-blossom-rose text-white text-xs font-bold px-3 py-1 rounded-full">
+                                NEW
+                            </div>
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition flex items-center justify-center">
+                                <button class="bg-white text-gray-800 px-6 py-2 rounded-full font-medium opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition shadow-lg">
+                                    Quick View
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-serif text-lg text-gray-800 mb-1" x-text="item.name"></h3>
+                            <p class="text-blossom-rose font-medium" x-text="'$' + item.price"></p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram Feed Section -->
+    <section id="instagram" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-blossom-rose font-medium mb-2 tracking-widest uppercase">Follow Us</p>
+                <h2 class="font-serif text-5xl font-light text-gray-800 mb-4">@blossom_boutique</h2>
+                <p class="text-gray-600">Join our community of elegant women</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <template x-for="(image, index) in instagramImages" :key="index">
+                    <a href="#" class="group relative aspect-square overflow-hidden rounded-lg">
+                        <img :src="image" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-blossom-rose/0 group-hover:bg-blossom-rose/30 transition flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.07 1.645.07 4.849 0 3.205-.012 3.584-.07 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </div>
+                    </a>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-24 soft-gradient">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="font-serif text-4xl font-light text-gray-800 mb-4">Join Our World</h2>
+            <p class="text-gray-600 mb-8">Subscribe for exclusive offers, early access to new collections, and style inspiration.</p>
+            <form @submit.prevent="subscribeNewsletter" class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input type="email" x-model="newsletterEmail" placeholder="Your email address" 
+                       class="flex-1 px-6 py-4 rounded-full border-2 border-blossom-pink focus:outline-none focus:border-blossom-rose" required>
+                <button type="submit" class="bg-blossom-rose text-white px-8 py-4 rounded-full font-medium hover:bg-blossom-pinkDark transition shadow-lg">
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <svg class="w-8 h-8 text-blossom-rose mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <span class="font-serif text-2xl font-bold text-gray-800">Blossom</span>
+                </div>
+                <p class="text-gray-400 text-sm">&copy; 2026 Blossom Boutique. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function blossomBoutique() {
+            return {
+                mobileMenu: false,
+                cart: [],
+                newsletterEmail: '',
+                featuredProduct: {
+                    price: 289,
+                    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+                    selectedSize: 'M',
+                    selectedColor: 'pink',
+                    colors: {
+                        pink: {
+                            name: 'Blush Pink',
+                            hex: '#FFC0CB'
+                        },
+                        blue: {
+                            name: 'Sky Blue',
+                            hex: '#87CEEB'
+                        },
+                        black: {
+                            name: 'Midnight Black',
+                            hex: '#2C2C2C'
+                        }
+                    },
+                    images: {
+                        pink: 'https://picsum.photos/seed/elegant_woman_dress/800/1000',
+                        blue: 'https://picsum.photos/seed/elegant_woman_dress_blue/800/1000',
+                        black: 'https://picsum.photos/seed/elegant_woman_dress_black/800/1000'
+                    }
+                },
+                newArrivals: [
+                    { id: 1, name: 'Pink Floral Dress', price: 189, image: 'https://picsum.photos/seed/woman_model_1/600/800', new: true },
+                    { id: 2, name: 'Summer Casual', price: 129, image: 'https://picsum.photos/seed/female_portrait_pose/600/800', new: true },
+                    { id: 3, name: 'Elegant Portrait', price: 249, image: 'https://picsum.photos/seed/woman_fashion_street/600/800', new: true },
+                    { id: 4, name: 'Classic Style', price: 159, image: 'https://picsum.photos/seed/woman_classic_fashion/600/800', new: false },
+                    { id: 5, name: 'Modern Chic', price: 199, image: 'https://picsum.photos/seed/woman_modern_chic/600/800', new: true },
+                    { id: 6, name: 'Boutique Look', price: 219, image: 'https://picsum.photos/seed/woman_boutique/600/800', new: true }
+                ],
+                instagramImages: [
+                    'https://picsum.photos/seed/woman_instagram_1/300/300',
+                    'https://picsum.photos/seed/woman_instagram_2/300/300',
+                    'https://picsum.photos/seed/woman_instagram_3/300/300',
+                    'https://picsum.photos/seed/woman_instagram_4/300/300',
+                    'https://picsum.photos/seed/woman_instagram_5/300/300',
+                    'https://picsum.photos/seed/woman_instagram_6/300/300'
+                ],
+                addToCart(product) {
+                    const item = {
+                        ...product,
+                        color: this.featuredProduct.colors[this.featuredProduct.selectedColor].name,
+                        size: this.featuredProduct.selectedSize
+                    };
+                    this.cart.push(item);
+                    alert(`Added to bag!\n\n${item.colors[item.selectedColor].name} Silk Dress\nSize: ${item.selectedSize}\n$${item.price}`);
+                },
+                quickView(item) {
+                    alert(`${item.name} - $${item.price}\n\nClick "Shop Now" to see more details!`);
+                },
+                scrollToFeatured() {
+                    document.getElementById('featured').scrollIntoView({ behavior: 'smooth' });
+                },
+                subscribeNewsletter() {
+                    alert(`Welcome to Blossom!\n\n${this.newsletterEmail} has been subscribed to our newsletter.`);
+                    this.newsletterEmail = '';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
