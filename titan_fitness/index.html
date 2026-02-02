@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titan Fitness | Forge Your Body</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Teko', 'sans-serif'],
+                        body: ['Roboto', 'sans-serif'],
+                    },
+                    colors: {
+                        volt: '#CCFF00',
+                        matte: '#111111',
+                        darkgrey: '#222222',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .hero-bg {
+            background: linear-gradient(rgba(17, 17, 17, 0.7), rgba(17, 17, 17, 0.7)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .cart-drawer {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .cart-drawer.open {
+            transform: translateX(0);
+        }
+        .product-card {
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(204, 255, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="font-body bg-matte text-white" x-data="{
+    cartOpen: false,
+    cart: [],
+    get cartCount() {
+        return this.cart.reduce((sum, item) => sum + item.quantity, 0);
+    },
+    get cartTotal() {
+        return this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
+    },
+    addToCart(product) {
+        const existing = this.cart.find(item => item.id === product.id);
+        if (existing) {
+            existing.quantity++;
+        } else {
+            this.cart.push({ ...product, quantity: 1 });
+        }
+    },
+    removeFromCart(productId) {
+        this.cart = this.cart.filter(item => item.id !== productId);
+    },
+    checkout() {
+        alert(`Checkout - Total: $${this.cartTotal}\n\nThank you for your order!`);
+        this.cart = [];
+        this.cartOpen = false;
+    }
+}">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-matte/95 backdrop-blur-md border-b border-volt/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center">
+                    <span class="font-display text-4xl font-bold text-volt tracking-wider">TITAN</span>
+                    <span class="font-display text-4xl font-bold text-white tracking-wider ml-2">FITNESS</span>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-300 hover:text-volt transition font-medium">HOME</a>
+                    <a href="#memberships" class="text-gray-300 hover:text-volt transition font-medium">MEMBERSHIPS</a>
+                    <a href="#shop" class="text-gray-300 hover:text-volt transition font-medium">SHOP</a>
+                    <a href="#trainers" class="text-gray-300 hover:text-volt transition font-medium">TRAINERS</a>
+                    <button @click="cartOpen = true" class="relative bg-volt text-matte px-6 py-2.5 rounded font-bold hover:bg-white transition">
+                        <span>CART</span>
+                        <span x-show="cartCount > 0" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center" x-text="cartCount"></span>
+                    </button>
+                </div>
+
+                <button @click="cartOpen = true" class="md:hidden relative text-volt">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    <span x-show="cartCount > 0" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center" x-text="cartCount"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg min-h-screen flex items-center pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+            <div class="max-w-3xl">
+                <p class="text-volt font-bold mb-4 tracking-[0.3em] uppercase">No Pain, No Gain</p>
+                <h1 class="font-display text-7xl md:text-9xl font-bold text-white mb-6 leading-none">
+                    FORGE<br>YOUR<br><span class="text-volt">BODY</span>
+                </h1>
+                <p class="text-gray-300 text-xl mb-8 leading-relaxed max-w-2xl">
+                    Transform your physique with elite training programs, premium equipment, and expert guidance. Join the Titan family today.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#memberships" class="bg-volt text-matte px-8 py-4 rounded font-bold text-lg text-center hover:bg-white transition">
+                        JOIN NOW
+                    </a>
+                    <a href="#shop" class="border-2 border-volt text-volt px-8 py-4 rounded font-bold text-lg text-center hover:bg-volt hover:text-matte transition">
+                        SHOP GEAR
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Plans -->
+    <section id="memberships" class="py-24 bg-darkgrey">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-volt font-bold mb-2 tracking-[0.3em] uppercase">Choose Your Path</p>
+                <h2 class="font-display text-6xl font-bold text-white mb-4">MEMBERSHIP PLANS</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Basic -->
+                <div class="bg-matte p-8 rounded-lg border-2 border-gray-700 hover:border-volt transition">
+                    <h3 class="font-display text-4xl font-bold text-white mb-2">BASIC</h3>
+                    <p class="text-gray-400 mb-6">Essential Access</p>
+                    <div class="mb-6">
+                        <span class="font-display text-5xl font-bold text-volt">$29</span>
+                        <span class="text-gray-400">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-volt mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Gym Access (6am-10pm)
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-volt mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Cardio Equipment
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-volt mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Free Weights
+                        </li>
+                    </ul>
+                    <button class="w-full bg-gray-700 text-white py-3 rounded font-bold hover:bg-volt hover:text-matte transition">
+                        SELECT PLAN
+                    </button>
+                </div>
+
+                <!-- Pro -->
+                <div class="bg-matte p-8 rounded-lg border-2 border-volt relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-volt text-matte px-4 py-1 rounded-full text-sm font-bold">
+                        POPULAR
+                    </div>
+                    <h3 class="font-display text-4xl font-bold text-white mb-2">PRO</h3>
+                    <p class="text-gray-400 mb-6">Complete Training</p>
+                    <div class="mb-6">
+                        <span class="font-display text-5xl font-bold text-volt">$59</span>
+                        <span class="text-gray-400">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-volt mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            24/7 Gym Access
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-volt mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            All Equipment
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-volt mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Group Classes
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-volt mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Nutrition Guide
+                        </li>
+                    </ul>
+                    <button class="w-full bg-volt text-matte py-3 rounded font-bold hover:bg-white transition">
+                        SELECT PLAN
+                    </button>
+                </div>
+
+                <!-- Titan -->
+                <div class="bg-matte p-8 rounded-lg border-2 border-gray-700 hover:border-volt transition">
+                    <h3 class="font-display text-4xl font-bold text-white mb-2">TITAN</h3>
+                    <p class="text-gray-400 mb-6">Elite Performance</p>
+                    <div class="mb-6">
+                        <span class="font-display text-5xl font-bold text-volt">$99</span>
+                        <span class="text-gray-400">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-volt mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Everything in Pro
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-volt mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Personal Trainer (4x/month)
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-volt mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Custom Meal Plan
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-volt mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Supplement Discount
+                        </li>
+                    </ul>
+                    <button class="w-full bg-gray-700 text-white py-3 rounded font-bold hover:bg-volt hover:text-matte transition">
+                        SELECT PLAN
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section id="shop" class="py-24 bg-matte">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-volt font-bold mb-2 tracking-[0.3em] uppercase">Fuel Your Gains</p>
+                <h2 class="font-display text-6xl font-bold text-white mb-4">THE SHOP</h2>
+                <p class="text-gray-400">Premium supplements and gear for serious athletes</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card bg-darkgrey rounded-lg overflow-hidden">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=600" alt="Whey Protein" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-2xl font-bold text-white mb-2">TITAN WHEY PROTEIN</h3>
+                        <p class="text-gray-400 text-sm mb-4">Premium isolate blend - 25g protein per serving</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-display text-3xl font-bold text-volt">$49.99</span>
+                            <button @click="addToCart({id: 1, name: 'Titan Whey Protein', price: 49.99, image: 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=200'})" 
+                                    class="bg-volt text-matte px-6 py-2 rounded font-bold hover:bg-white transition">
+                                ADD TO CART
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card bg-darkgrey rounded-lg overflow-hidden">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?w=600" alt="Creatine" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-2xl font-bold text-white mb-2">PURE CREATINE</h3>
+                        <p class="text-gray-400 text-sm mb-4">Micronized monohydrate - 5g per serving</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-display text-3xl font-bold text-volt">$29.99</span>
+                            <button @click="addToCart({id: 2, name: 'Pure Creatine', price: 29.99, image: 'https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?w=200'})" 
+                                    class="bg-volt text-matte px-6 py-2 rounded font-bold hover:bg-white transition">
+                                ADD TO CART
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card bg-darkgrey rounded-lg overflow-hidden">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600" alt="Gym Gloves" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-2xl font-bold text-white mb-2">PRO LIFTING GLOVES</h3>
+                        <p class="text-gray-400 text-sm mb-4">Premium leather with wrist support</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-display text-3xl font-bold text-volt">$24.99</span>
+                            <button @click="addToCart({id: 3, name: 'Pro Lifting Gloves', price: 24.99, image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=200'})" 
+                                    class="bg-volt text-matte px-6 py-2 rounded font-bold hover:bg-white transition">
+                                ADD TO CART
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card bg-darkgrey rounded-lg overflow-hidden">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1556817411-31ae72fa3ea0?w=600" alt="Shaker" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-2xl font-bold text-white mb-2">TITAN SHAKER</h3>
+                        <p class="text-gray-400 text-sm mb-4">BPA-free with mixing ball - 28oz</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-display text-3xl font-bold text-volt">$14.99</span>
+                            <button @click="addToCart({id: 4, name: 'Titan Shaker', price: 14.99, image: 'https://images.unsplash.com/photo-1556817411-31ae72fa3ea0?w=200'})" 
+                                    class="bg-volt text-matte px-6 py-2 rounded font-bold hover:bg-white transition">
+                                ADD TO CART
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card bg-darkgrey rounded-lg overflow-hidden">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600" alt="Pre-Workout" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-2xl font-bold text-white mb-2">EXPLOSIVE PRE-WORKOUT</h3>
+                        <p class="text-gray-400 text-sm mb-4">Maximum energy and focus formula</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-display text-3xl font-bold text-volt">$39.99</span>
+                            <button @click="addToCart({id: 5, name: 'Explosive Pre-Workout', price: 39.99, image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200'})" 
+                                    class="bg-volt text-matte px-6 py-2 rounded font-bold hover:bg-white transition">
+                                ADD TO CART
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card bg-darkgrey rounded-lg overflow-hidden">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1532384748853-8f54a8f476e2?w=600" alt="Resistance Bands" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-2xl font-bold text-white mb-2">RESISTANCE BAND SET</h3>
+                        <p class="text-gray-400 text-sm mb-4">5 bands with varying resistance levels</p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-display text-3xl font-bold text-volt">$34.99</span>
+                            <button @click="addToCart({id: 6, name: 'Resistance Band Set', price: 34.99, image: 'https://images.unsplash.com/photo-1532384748853-8f54a8f476e2?w=200'})" 
+                                    class="bg-volt text-matte px-6 py-2 rounded font-bold hover:bg-white transition">
+                                ADD TO CART
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trainers Section -->
+    <section id="trainers" class="py-24 bg-darkgrey">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <p class="text-volt font-bold mb-2 tracking-[0.3em] uppercase">Expert Guidance</p>
+                <h2 class="font-display text-6xl font-bold text-white mb-4">OUR TRAINERS</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-matte rounded-lg overflow-hidden group">
+                    <div class="h-80 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600" alt="Trainer" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="font-display text-3xl font-bold text-white mb-1">MARCUS STEEL</h3>
+                        <p class="text-volt font-bold mb-2">HEAD TRAINER</p>
+                        <p class="text-gray-400 text-sm">Certified Strength & Conditioning Specialist</p>
+                    </div>
+                </div>
+
+                <div class="bg-matte rounded-lg overflow-hidden group">
+                    <div class="h-80 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?w=600" alt="Trainer" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="font-display text-3xl font-bold text-white mb-1">SARAH IRON</h3>
+                        <p class="text-volt font-bold mb-2">CROSSFIT COACH</p>
+                        <p class="text-gray-400 text-sm">Level 3 CrossFit Trainer & Nutritionist</p>
+                    </div>
+                </div>
+
+                <div class="bg-matte rounded-lg overflow-hidden group">
+                    <div class="h-80 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=600" alt="Trainer" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="font-display text-3xl font-bold text-white mb-1">ALEX POWER</h3>
+                        <p class="text-volt font-bold mb-2">POWERLIFTING COACH</p>
+                        <p class="text-gray-400 text-sm">Former National Champion & Coach</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-matte py-12 border-t border-volt/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <span class="font-display text-3xl font-bold text-volt">TITAN</span>
+                        <span class="font-display text-3xl font-bold text-white ml-2">FITNESS</span>
+                    </div>
+                    <p class="text-gray-400">Transform your body, transform your life.</p>
+                </div>
+                <div>
+                    <h4 class="font-display text-2xl font-bold text-white mb-4">LOCATION</h4>
+                    <p class="text-gray-400">123 Muscle Street<br>Fitness City, FC 12345<br>Open 24/7</p>
+                </div>
+                <div>
+                    <h4 class="font-display text-2xl font-bold text-white mb-4">FOLLOW US</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-volt transition text-2xl">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-volt transition text-2xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-volt transition text-2xl">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center">
+                <p class="text-gray-500">&copy; 2026 Titan Fitness. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Drawer -->
+    <div x-show="cartOpen" @click.self="cartOpen = false" class="fixed inset-0 bg-black/50 z-50" x-cloak>
+        <div class="cart-drawer fixed right-0 top-0 h-full w-full max-w-md bg-darkgrey shadow-2xl flex flex-col" :class="cartOpen ? 'open' : ''">
+            <!-- Cart Header -->
+            <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                <h3 class="font-display text-3xl font-bold text-white">YOUR CART</h3>
+                <button @click="cartOpen = false" class="text-gray-400 hover:text-volt">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Cart Items -->
+            <div class="flex-1 overflow-y-auto p-6">
+                <div x-show="cart.length === 0" class="text-center py-12">
+                    <p class="text-gray-400 text-lg">Your cart is empty</p>
+                </div>
+
+                <div x-show="cart.length > 0" class="space-y-4">
+                    <template x-for="item in cart" :key="item.id">
+                        <div class="flex items-center gap-4 bg-matte p-4 rounded-lg">
+                            <img :src="item.image" :alt="item.name" class="w-20 h-20 object-cover rounded">
+                            <div class="flex-1">
+                                <h4 class="font-bold text-white text-sm" x-text="item.name"></h4>
+                                <p class="text-volt font-bold" x-text="'$' + item.price.toFixed(2)"></p>
+                                <p class="text-gray-400 text-sm" x-text="'Qty: ' + item.quantity"></p>
+                            </div>
+                            <button @click="removeFromCart(item.id)" class="text-red-500 hover:text-red-400">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Cart Footer -->
+            <div x-show="cart.length > 0" class="border-t border-gray-700 p-6 space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="font-display text-2xl font-bold text-white">TOTAL:</span>
+                    <span class="font-display text-3xl font-bold text-volt" x-text="'$' + cartTotal"></span>
+                </div>
+                <button @click="checkout()" class="w-full bg-volt text-matte py-4 rounded font-bold text-lg hover:bg-white transition">
+                    CHECKOUT
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</body>
+</html>
