@@ -82,5 +82,12 @@
     "category": "Business",
     "thumbnail": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/screenshots/sentinal_legal.png",
     "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/sentinel_legal/index.html"
+  },
+  {
+    "id": "titan-fitness",
+    "name": "Titan Fitness",
+    "category": "Health",
+    "thumbnail": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/screenshots/titan_fitness.png",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/titan_fitness/index.html"
   }
 ]
