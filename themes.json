@@ -75,5 +75,12 @@
     "category": "Food",
     "thumbnail": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/screenshots/crave_burger.png",
     "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/crave_burger/index.html"
+  },
+  {
+    "id": "sentinel-legal",
+    "name": "Sentinel-legal",
+    "category": "",
+    "thumbnail": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/screenshots/sentinal_legal.png",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/sentinel_legal/index.html"
   }
 ]
