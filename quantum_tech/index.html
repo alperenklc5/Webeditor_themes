@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Tech | The Future of AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        neon: {
+                            purple: '#a855f7',
+                            blue: '#3b82f6',
+                            pink: '#ec4899',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        body {
+            background: #000;
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #a855f7 0%, #3b82f6 50%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glow-button {
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5), 0 0 40px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.8), 0 0 60px rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+        }
+        .glass {
+            background: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(135deg, #a855f7, #3b82f6, #ec4899);
+            padding: 2px;
+            border-radius: 1rem;
+        }
+        .gradient-border-inner {
+            background: #000;
+            border-radius: 0.875rem;
+        }
+        .pricing-toggle {
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+        }
+    </style>
+</head>
+<body class="bg-black text-white" x-data="{ pricingPeriod: 'monthly' }">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center">
+                    <svg class="w-8 h-8 text-neon-purple mr-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                    </svg>
+                    <span class="text-2xl font-bold gradient-text">Quantum Tech</span>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-300 hover:text-neon-purple transition">Features</a>
+                    <a href="#pricing" class="text-gray-300 hover:text-neon-purple transition">Pricing</a>
+                    <a href="#testimonials" class="text-gray-300 hover:text-neon-purple transition">Testimonials</a>
+                    <button class="bg-gradient-to-r from-neon-purple to-neon-blue text-white px-6 py-2.5 rounded-lg font-semibold glow-button">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <!-- Background Elements -->
+        <div class="absolute inset-0">
+            <div class="absolute top-20 left-10 w-96 h-96 bg-neon-purple/20 rounded-full blur-3xl floating"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-neon-blue/20 rounded-full blur-3xl floating" style="animation-delay: -3s;"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-8">
+                <span class="inline-block px-4 py-2 glass rounded-full text-sm font-semibold text-neon-purple mb-6">
+                    🚀 Powered by Advanced AI
+                </span>
+            </div>
+            <h1 class="text-6xl md:text-8xl font-bold mb-6 leading-tight">
+                The Future of <br>
+                <span class="gradient-text">Artificial Intelligence</span>
+            </h1>
+            <p class="text-xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
+                Harness the power of quantum computing and machine learning to transform your business. 
+                Experience unprecedented speed, security, and scalability.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-gradient-to-r from-neon-purple to-neon-blue text-white px-8 py-4 rounded-lg font-semibold text-lg glow-button">
+                    Start Free Trial
+                </button>
+                <button class="glass text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/10 transition">
+                    Watch Demo
+                </button>
+            </div>
+
+            <!-- Floating Abstract Element -->
+            <div class="mt-20 relative">
+                <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800" alt="Abstract Tech" class="mx-auto rounded-2xl shadow-2xl floating glass p-4">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 glass rounded-full text-sm font-semibold text-neon-blue mb-4">
+                    Why Choose Us
+                </span>
+                <h2 class="text-5xl font-bold mb-4">
+                    <span class="gradient-text">Next-Gen Features</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Built for the future, designed for today. Experience technology that adapts to your needs.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass p-8 rounded-2xl hover:bg-white/5 transition group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-neon-purple to-neon-blue rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Lightning Speed</h3>
+                    <p class="text-gray-400">Process millions of operations per second with quantum-powered algorithms.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass p-8 rounded-2xl hover:bg-white/5 transition group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-neon-blue to-neon-pink rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Military-Grade Security</h3>
+                    <p class="text-gray-400">End-to-end encryption with quantum-resistant cryptography protocols.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass p-8 rounded-2xl hover:bg-white/5 transition group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-neon-pink to-neon-purple rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Infinite Scalability</h3>
+                    <p class="text-gray-400">Scale from startup to enterprise without infrastructure limitations.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass p-8 rounded-2xl hover:bg-white/5 transition group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-neon-purple to-neon-blue rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">AI-Powered Insights</h3>
+                    <p class="text-gray-400">Real-time analytics and predictive modeling with machine learning.</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="glass p-8 rounded-2xl hover:bg-white/5 transition group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-neon-blue to-neon-pink rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Seamless Integration</h3>
+                    <p class="text-gray-400">Connect with your existing tools through our comprehensive API.</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="glass p-8 rounded-2xl hover:bg-white/5 transition group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-neon-pink to-neon-purple rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">24/7 Support</h3>
+                    <p class="text-gray-400">Expert support team available around the clock to assist you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 glass rounded-full text-sm font-semibold text-neon-purple mb-4">
+                    Flexible Plans
+                </span>
+                <h2 class="text-5xl font-bold mb-4">
+                    <span class="gradient-text">Choose Your Plan</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto mb-8">
+                    Start free, scale as you grow. No hidden fees, cancel anytime.
+                </p>
+
+                <!-- Pricing Toggle -->
+                <div class="inline-flex items-center glass rounded-full p-1">
+                    <button @click="pricingPeriod = 'monthly'" 
+                            :class="pricingPeriod === 'monthly' ? 'pricing-toggle text-white' : 'text-gray-400'"
+                            class="px-6 py-2 rounded-full font-semibold transition">
+                        Monthly
+                    </button>
+                    <button @click="pricingPeriod = 'yearly'" 
+                            :class="pricingPeriod === 'yearly' ? 'pricing-toggle text-white' : 'text-gray-400'"
+                            class="px-6 py-2 rounded-full font-semibold transition">
+                        Yearly <span class="text-xs ml-1">(Save 20%)</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Starter Plan -->
+                <div class="glass p-8 rounded-2xl">
+                    <h3 class="text-2xl font-bold mb-2">Starter</h3>
+                    <p class="text-gray-400 mb-6">Perfect for individuals</p>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold gradient-text" x-text="pricingPeriod === 'monthly' ? '$29' : '$279'"></span>
+                        <span class="text-gray-400" x-text="pricingPeriod === 'monthly' ? '/month' : '/year'"></span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-neon-purple mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            10,000 API calls/month
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-neon-purple mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Basic AI models
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-neon-purple mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Email support
+                        </li>
+                    </ul>
+                    <button class="w-full glass py-3 rounded-lg font-semibold hover:bg-white/10 transition">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Pro Plan (Featured) -->
+                <div class="gradient-border transform md:scale-105">
+                    <div class="gradient-border-inner p-8">
+                        <div class="inline-block px-3 py-1 bg-gradient-to-r from-neon-purple to-neon-blue rounded-full text-xs font-bold mb-4">
+                            MOST POPULAR
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Pro</h3>
+                        <p class="text-gray-400 mb-6">For growing teams</p>
+                        <div class="mb-6">
+                            <span class="text-5xl font-bold gradient-text" x-text="pricingPeriod === 'monthly' ? '$99' : '$950'"></span>
+                            <span class="text-gray-400" x-text="pricingPeriod === 'monthly' ? '/month' : '/year'"></span>
+                        </div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 text-neon-blue mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                100,000 API calls/month
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 text-neon-blue mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Advanced AI models
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 text-neon-blue mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Priority support
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <svg class="w-5 h-5 text-neon-blue mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Custom integrations
+                            </li>
+                        </ul>
+                        <button class="w-full bg-gradient-to-r from-neon-purple to-neon-blue py-3 rounded-lg font-semibold glow-button">
+                            Get Started
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="glass p-8 rounded-2xl">
+                    <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
+                    <p class="text-gray-400 mb-6">For large organizations</p>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold gradient-text">Custom</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-neon-pink mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Unlimited API calls
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-neon-pink mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Custom AI training
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-neon-pink mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Dedicated account manager
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <svg class="w-5 h-5 text-neon-pink mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            SLA guarantee
+                        </li>
+                    </ul>
+                    <button class="w-full glass py-3 rounded-lg font-semibold hover:bg-white/10 transition">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 glass rounded-full text-sm font-semibold text-neon-blue mb-4">
+                    Trusted Worldwide
+                </span>
+                <h2 class="text-5xl font-bold mb-4">
+                    <span class="gradient-text">Trusted by Tech Giants</span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
+                <div class="glass p-8 rounded-2xl text-center">
+                    <p class="text-3xl font-bold gradient-text">TechCorp</p>
+                </div>
+                <div class="glass p-8 rounded-2xl text-center">
+                    <p class="text-3xl font-bold gradient-text">DataFlow</p>
+                </div>
+                <div class="glass p-8 rounded-2xl text-center">
+                    <p class="text-3xl font-bold gradient-text">CloudSync</p>
+                </div>
+                <div class="glass p-8 rounded-2xl text-center">
+                    <p class="text-3xl font-bold gradient-text">NeuralNet</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 relative">
+        <div class="absolute inset-0">
+            <div class="absolute inset-0 bg-gradient-to-r from-neon-purple/20 to-neon-blue/20 blur-3xl"></div>
+        </div>
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-5xl md:text-6xl font-bold mb-6">
+                Ready to <span class="gradient-text">Launch?</span>
+            </h2>
+            <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
+                Join thousands of companies already using Quantum Tech to power their AI infrastructure.
+            </p>
+            <button class="bg-gradient-to-r from-neon-purple to-neon-blue text-white px-12 py-5 rounded-lg font-bold text-xl glow-button">
+                Start Your Free Trial
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="glass py-12 mt-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <svg class="w-6 h-6 text-neon-purple mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                        </svg>
+                        <span class="text-xl font-bold gradient-text">Quantum Tech</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">The future of AI, today.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Product</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-neon-purple transition">Features</a></li>
+                        <li><a href="#" class="hover:text-neon-purple transition">Pricing</a></li>
+                        <li><a href="#" class="hover:text-neon-purple transition">API Docs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-neon-purple transition">About</a></li>
+                        <li><a href="#" class="hover:text-neon-purple transition">Blog</a></li>
+                        <li><a href="#" class="hover:text-neon-purple transition">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-neon-purple transition">Privacy</a></li>
+                        <li><a href="#" class="hover:text-neon-purple transition">Terms</a></li>
+                        <li><a href="#" class="hover:text-neon-purple transition">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; 2026 Quantum Tech. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

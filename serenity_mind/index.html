@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serenity Mind | Professional Therapy & Counseling</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Lora', 'serif'],
+                        sans: ['Lato', 'sans-serif'],
+                    },
+                    colors: {
+                        calm: {
+                            blue: '#a8dadc',
+                            blueLight: '#cfe8e9',
+                            blueDark: '#457b9d',
+                            sand: '#f1e8dc',
+                            beige: '#e8dcc4',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        body {
+            font-family: 'Lato', sans-serif;
+        }
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(168, 218, 220, 0.3), rgba(168, 218, 220, 0.5));
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800" x-data="{ openFaq: null }">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center">
+                    <svg class="w-8 h-8 text-calm-blueDark mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    <span class="text-2xl font-serif font-bold text-calm-blueDark">Serenity Mind</span>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-600 hover:text-calm-blueDark transition">Home</a>
+                    <a href="#how" class="text-gray-600 hover:text-calm-blueDark transition">How It Works</a>
+                    <a href="#faq" class="text-gray-600 hover:text-calm-blueDark transition">FAQ</a>
+                    <a href="#office" class="text-gray-600 hover:text-calm-blueDark transition">The Office</a>
+                    <a href="#contact" class="bg-calm-blueDark text-white px-6 py-2.5 rounded-full font-semibold hover:bg-calm-blueDark/90 transition">
+                        Book Session
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center pt-20">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" alt="Peaceful Ocean" class="w-full h-full object-cover">
+            <div class="hero-overlay absolute inset-0"></div>
+        </div>
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 text-center">
+            <h1 class="font-serif text-5xl md:text-7xl font-bold text-calm-blueDark mb-6 leading-tight">
+                Find Your<br>
+                <span class="text-white">Inner Peace</span>
+            </h1>
+            <p class="text-gray-700 text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
+                A safe, compassionate space for healing and growth. Professional therapy services to help you navigate life's challenges.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#contact" class="bg-calm-blueDark text-white px-8 py-4 rounded-full font-semibold hover:bg-calm-blueDark/90 transition shadow-lg">
+                    Schedule Appointment
+                </a>
+                <a href="#how" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-calm-blueDark transition">
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Section -->
+    <section class="py-24 bg-calm-sand">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <svg class="w-16 h-16 text-calm-blue mx-auto mb-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/>
+            </svg>
+            <p class="font-serif text-3xl md:text-4xl text-gray-700 italic leading-relaxed mb-6">
+                "You don't have to control your thoughts. You just have to stop letting them control you."
+            </p>
+            <p class="text-gray-500 font-semibold">— Dan Millman</p>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-calm-blueLight text-calm-blueDark rounded-full text-sm font-semibold mb-4">
+                    Simple Process
+                </span>
+                <h2 class="font-serif text-4xl font-bold text-gray-800 mb-4">How It Works</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Your journey to wellness in three simple steps</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12">
+                <!-- Step 1 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-calm-blue rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-calm-blueDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-gray-800 mb-3">1. Book Online</h3>
+                    <p class="text-gray-600">Schedule your first session at a time that works for you. Online or in-person options available.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-calm-blue rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-calm-blueDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-gray-800 mb-3">2. Meet Expert</h3>
+                    <p class="text-gray-600">Connect with a licensed therapist in a safe, confidential environment designed for healing.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-calm-blue rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-calm-blueDark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-gray-800 mb-3">3. Feel Better</h3>
+                    <p class="text-gray-600">Begin your journey to improved mental health with personalized treatment plans and ongoing support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-24 bg-calm-sand">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-white text-calm-blueDark rounded-full text-sm font-semibold mb-4">
+                    Common Questions
+                </span>
+                <h2 class="font-serif text-4xl font-bold text-gray-800 mb-4">Frequently Asked Questions</h2>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ 1 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+                    <button @click="openFaq = openFaq === 1 ? null : 1" 
+                            class="w-full flex items-center justify-between p-6 text-left hover:bg-calm-blueLight/30 transition">
+                        <span class="font-semibold text-gray-800 text-lg">Is therapy right for me?</span>
+                        <svg class="w-6 h-6 text-calm-blueDark transition-transform" :class="openFaq === 1 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div x-show="openFaq === 1" x-cloak x-transition class="px-6 pb-6">
+                        <p class="text-gray-600 leading-relaxed">
+                            Therapy can benefit anyone facing life challenges, stress, anxiety, depression, relationship issues, or simply seeking personal growth. You don't need to be in crisis to benefit from therapy—it's a proactive step toward better mental health and self-understanding.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+                    <button @click="openFaq = openFaq === 2 ? null : 2" 
+                            class="w-full flex items-center justify-between p-6 text-left hover:bg-calm-blueLight/30 transition">
+                        <span class="font-semibold text-gray-800 text-lg">Do you accept insurance?</span>
+                        <svg class="w-6 h-6 text-calm-blueDark transition-transform" :class="openFaq === 2 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div x-show="openFaq === 2" x-cloak x-transition class="px-6 pb-6">
+                        <p class="text-gray-600 leading-relaxed">
+                            Yes, we accept most major insurance plans including Blue Cross, Aetna, Cigna, and UnitedHealthcare. We also offer sliding scale fees for those without insurance. Please contact us to verify your specific coverage and discuss payment options.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+                    <button @click="openFaq = openFaq === 3 ? null : 3" 
+                            class="w-full flex items-center justify-between p-6 text-left hover:bg-calm-blueLight/30 transition">
+                        <span class="font-semibold text-gray-800 text-lg">What can I expect in the first session?</span>
+                        <svg class="w-6 h-6 text-calm-blueDark transition-transform" :class="openFaq === 3 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div x-show="openFaq === 3" x-cloak x-transition class="px-6 pb-6">
+                        <p class="text-gray-600 leading-relaxed">
+                            Your first session is about getting to know each other. We'll discuss what brought you to therapy, your goals, and any concerns you have. This is a judgment-free space where you can share openly. Together, we'll create a treatment plan tailored to your needs.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+                    <button @click="openFaq = openFaq === 4 ? null : 4" 
+                            class="w-full flex items-center justify-between p-6 text-left hover:bg-calm-blueLight/30 transition">
+                        <span class="font-semibold text-gray-800 text-lg">How long does therapy take?</span>
+                        <svg class="w-6 h-6 text-calm-blueDark transition-transform" :class="openFaq === 4 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div x-show="openFaq === 4" x-cloak x-transition class="px-6 pb-6">
+                        <p class="text-gray-600 leading-relaxed">
+                            The duration varies based on individual needs and goals. Some clients find relief in a few sessions, while others benefit from longer-term therapy. We'll regularly assess your progress and adjust the treatment plan as needed. You're always in control of your therapeutic journey.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+                    <button @click="openFaq = openFaq === 5 ? null : 5" 
+                            class="w-full flex items-center justify-between p-6 text-left hover:bg-calm-blueLight/30 transition">
+                        <span class="font-semibold text-gray-800 text-lg">Is everything I say confidential?</span>
+                        <svg class="w-6 h-6 text-calm-blueDark transition-transform" :class="openFaq === 5 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div x-show="openFaq === 5" x-cloak x-transition class="px-6 pb-6">
+                        <p class="text-gray-600 leading-relaxed">
+                            Yes, confidentiality is a cornerstone of therapy. Everything you share is protected by law and professional ethics. The only exceptions are if there's a risk of harm to yourself or others, or if required by court order. Your privacy and trust are paramount.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Office Section -->
+    <section id="office" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-calm-blueLight text-calm-blueDark rounded-full text-sm font-semibold mb-4">
+                    Our Space
+                </span>
+                <h2 class="font-serif text-4xl font-bold text-gray-800 mb-4">A Comfortable, Safe Environment</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Designed to help you feel at ease and supported</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800" alt="Therapy Room" class="rounded-3xl shadow-xl w-full h-80 object-cover">
+                <img src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800" alt="Cozy Space" class="rounded-3xl shadow-xl w-full h-80 object-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-24 bg-calm-sand">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800" alt="Therapist" class="rounded-3xl shadow-2xl">
+                </div>
+                <div>
+                    <span class="inline-block px-4 py-2 bg-white text-calm-blueDark rounded-full text-sm font-semibold mb-4">
+                        About Me
+                    </span>
+                    <h2 class="font-serif text-4xl font-bold text-gray-800 mb-6">Dr. Jennifer Matthews</h2>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        I'm a licensed clinical psychologist with over 12 years of experience helping individuals, couples, and families navigate life's challenges. My approach is warm, collaborative, and evidence-based, drawing from cognitive-behavioral therapy (CBT), mindfulness practices, and person-centered therapy.
+                    </p>
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        I specialize in anxiety, depression, trauma, relationship issues, and life transitions. My goal is to create a safe, non-judgmental space where you can explore your thoughts and feelings, develop coping strategies, and work toward meaningful change.
+                    </p>
+                    <div class="space-y-3 mb-8">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-calm-blueDark mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-gray-700">Licensed Clinical Psychologist (Ph.D.)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-calm-blueDark mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-gray-700">Certified in CBT & Trauma-Focused Therapy</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-calm-blueDark mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-gray-700">Member, American Psychological Association</span>
+                        </div>
+                    </div>
+                    <p class="font-serif text-2xl text-gray-600 italic">— Dr. Jennifer Matthews</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="inline-block px-4 py-2 bg-calm-blueLight text-calm-blueDark rounded-full text-sm font-semibold mb-4">
+                    Take the First Step
+                </span>
+                <h2 class="font-serif text-4xl font-bold text-gray-800 mb-4">Book Your Free Consultation</h2>
+                <p class="text-gray-600">Let's discuss how I can support you on your journey to wellness</p>
+            </div>
+
+            <div class="bg-calm-sand rounded-3xl p-8 md:p-12 shadow-xl">
+                <form class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">First Name *</label>
+                            <input type="text" class="w-full px-4 py-3 border-2 border-calm-blue rounded-xl focus:outline-none focus:border-calm-blueDark transition" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Last Name *</label>
+                            <input type="text" class="w-full px-4 py-3 border-2 border-calm-blue rounded-xl focus:outline-none focus:border-calm-blueDark transition" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Email *</label>
+                        <input type="email" class="w-full px-4 py-3 border-2 border-calm-blue rounded-xl focus:outline-none focus:border-calm-blueDark transition" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Phone</label>
+                        <input type="tel" class="w-full px-4 py-3 border-2 border-calm-blue rounded-xl focus:outline-none focus:border-calm-blueDark transition">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Preferred Session Type</label>
+                        <select class="w-full px-4 py-3 border-2 border-calm-blue rounded-xl focus:outline-none focus:border-calm-blueDark transition">
+                            <option>In-Person</option>
+                            <option>Online (Video)</option>
+                            <option>Phone</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">How can I help you? *</label>
+                        <textarea rows="4" class="w-full px-4 py-3 border-2 border-calm-blue rounded-xl focus:outline-none focus:border-calm-blueDark transition" placeholder="Share what brings you here today..." required></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-calm-blueDark text-white py-4 rounded-xl font-semibold hover:bg-calm-blueDark/90 transition shadow-lg">
+                        Request Appointment
+                    </button>
+                    <p class="text-center text-sm text-gray-500">
+                        All information is kept strictly confidential
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emergency Resources -->
+    <section class="py-16 bg-red-50 border-t-4 border-red-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="font-serif text-2xl font-bold text-red-800 mb-4">In Crisis? Get Immediate Help</h3>
+                <p class="text-gray-700 mb-6">If you're experiencing a mental health emergency, please contact:</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="tel:988" class="bg-red-600 text-white px-8 py-3 rounded-full font-bold hover:bg-red-700 transition">
+                        988 - Suicide & Crisis Lifeline
+                    </a>
+                    <a href="tel:911" class="border-2 border-red-600 text-red-600 px-8 py-3 rounded-full font-bold hover:bg-red-600 hover:text-white transition">
+                        911 - Emergency Services
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-calm-blueDark py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <svg class="w-6 h-6 text-calm-blue mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                        <span class="text-xl font-serif font-bold text-white">Serenity Mind</span>
+                    </div>
+                    <p class="text-calm-blueLight text-sm">Professional therapy services in a safe, compassionate environment.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-calm-blueLight text-sm">
+                        <li><a href="#home" class="hover:text-white transition">Home</a></li>
+                        <li><a href="#how" class="hover:text-white transition">How It Works</a></li>
+                        <li><a href="#faq" class="hover:text-white transition">FAQ</a></li>
+                        <li><a href="#contact" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">Contact</h4>
+                    <ul class="space-y-2 text-calm-blueLight text-sm">
+                        <li>123 Peaceful Lane</li>
+                        <li>Wellness City, WC 12345</li>
+                        <li>Phone: +1 (555) 123-4567</li>
+                        <li>Email: hello@serenitymind.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-calm-blue/30 pt-8 text-center text-calm-blueLight text-sm">
+                <p>&copy; 2026 Serenity Mind. All rights reserved. Licensed & Insured.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
