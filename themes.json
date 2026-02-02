@@ -89,5 +89,26 @@
     "category": "Health",
     "thumbnail": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/screenshots/titan_fitness.png",
     "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/titan_fitness/index.html"
+  }, 
+  {
+    "id": "quantum-tech",
+    "name": "Quantum Tech",
+    "category": "Technology",
+    "thumbnail": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/screenshots/quantum.png",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/quantum_tech/index.html"
+  },  
+  {
+    "id": "nutrilie",
+    "name": "Nutrilife",
+    "category": "Health",
+    "thumbnail": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/screenshots/nutri.png",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/nutrilife/index.html"
+  },
+    {
+    "id": "serenity-mind",
+    "name": "Serenity Mind",
+    "category": "Health",
+    "thumbnail": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/screenshots/serenity.png",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/serenity_mind/index.html"
   }
 ]
