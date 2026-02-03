@@ -110,5 +110,14 @@
     "category": "Health",
     "thumbnail": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/screenshots/serenity.png",
     "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/serenity_mind/index.html"
+  },
+   {
+    "id": "edupro",
+    "name": "EduPro",
+    "category": "Education",
+    "thumbnail": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/screenshots/edupro.png",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/edupro/index.html"
   }
+  
+  
 ]
