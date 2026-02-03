@@ -117,6 +117,20 @@
     "category": "Education",
     "thumbnail": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/screenshots/edupro.png",
     "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/edupro/index.html"
+  },
+  {
+    "id": "grand-estate",
+    "name": "Grand Estate",
+    "category": "Emlak",
+    "thumbnail": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/screenshots/grand.png",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/grand_estate/index.html"
+  },
+   {
+    "id": "roast-and-co",
+    "name": "Roast And Co",
+    "category": "Food",
+    "thumbnail": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/screenshots/roast.png",
+    "url": "https://raw.githubusercontent.com/alperenklc5/Webeditor_themes/main/roast_and_co/index.html"
   }
   
   
